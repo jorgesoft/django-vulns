@@ -39,6 +39,7 @@
                 <td>{{ vulnerability.cwe }}</td>
                 <td>
                     <a href="{% url 'vulnerability-delete' vulnerability.cve %}" onclick="return confirm('Are you sure you want to delete this vulnerability?');" class="btn btn-danger btn-sm">Delete</a>
+                    <a href="{% url 'vulnerability-update' vulnerability.cve %}" class="btn btn-warning btn-sm">Update</a>
                 </td>
             </tr>
             {% empty %}

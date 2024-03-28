@@ -4,7 +4,7 @@ from django.views.generic import TemplateView
 from .models import Vulnerabilities
 from .forms import VulnerabilitiesForm
 from django.urls import reverse_lazy
-from django.views.generic import DeleteView
+from django.views.generic import DeleteView, UpdateView
 from django.shortcuts import get_object_or_404
 
 class HomeView(TemplateView):
@@ -44,3 +44,15 @@ def delete_vulnerability(request, cve):
     vulnerability = get_object_or_404(Vulnerabilities, cve=cve)
     vulnerability.delete()
     return redirect('vulnerabilities')
+
+from django.shortcuts import get_object_or_404
+
+class VulnerabilityUpdateView(UpdateView):
+    model = Vulnerabilities
+    form_class = VulnerabilitiesForm
+    template_name = 'dashboard/vulnerability_update.html'
+    success_url = reverse_lazy('vulnerabilities')
+
+    def get_object(self, queryset=None):
+        cve = self.kwargs.get("cve")
+        return get_object_or_404(Vulnerabilities, cve=cve)
