@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Vulnerabilities</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>CVE</th>
+            <th>Software</th>
+            <th>Description</th>
+            <th>Severity</th>
+            <th>CWE</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for vulnerability in vulnerabilities %}
+        <tr>
+            <td>{{ vulnerability.cve }}</td>
+            <td>{{ vulnerability.software }}</td>
+            <td>{{ vulnerability.description }}</td>
+            <td>{{ vulnerability.severity }}</td>
+            <td>{{ vulnerability.cwe }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
