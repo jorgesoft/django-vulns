@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`vulnerabilities` (
   `cve` VARCHAR(45) NOT NULL,
   `software` VARCHAR(45) NULL,
   `description` VARCHAR(45) NULL,
-  `severity` DECIMAL(2,1) NULL,
+  `severity` DECIMAL(3,1) NULL,
   `cwe` VARCHAR(45) NULL,
   PRIMARY KEY (`cve`))
 ENGINE = InnoDB;
@@ -172,3 +172,27 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+INSERT INTO os (id, family, `version`, patch) VALUES
+(1, 'windows', '10', '22H2'),
+(2, 'linux', 'ubuntu', '23.10');
+
+INSERT INTO hosts (`name`, ip, os_id) VALUES
+('winserver1', '10.10.10.1', 1),
+('linuxserver1', '10.11.11.1', 2);
+
+INSERT INTO users (`name`, full_name) VALUES
+('jorges', 'Jorge Silva');
+
+INSERT INTO `groups` (`name`, `type`, `description`) VALUES
+('windows', 'server', 'Windows Servers'),
+('linux', 'server', 'Linux Servers');
+
+INSERT INTO vulnerabilities (cve, software, `description`, severity, cwe) VALUES
+('2', 'test', 'test', '10.0', 'test');
+
+-- Assuming you have the group IDs and host IDs
+-- For example purposes, let's say windows group ID is 1 and linux group ID is 2
+INSERT INTO assigned_groups (groups_name, hosts_id) VALUES
+('windows', 1),
+('linux', 2);
