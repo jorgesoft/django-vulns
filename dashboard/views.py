@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import TemplateView
 from .models import Vulnerabilities
 from .forms import VulnerabilitiesForm
+from django.urls import reverse_lazy
+from django.views.generic import DeleteView
+from django.shortcuts import get_object_or_404
 
 class HomeView(TemplateView):
     template_name = 'dashboard/home.html'
@@ -36,3 +39,8 @@ def create_vulnerability(request):
     else:
         form = VulnerabilitiesForm()
     return render(request, 'dashboard/vulnerability_create.html', {'form': form})
+
+def delete_vulnerability(request, cve):
+    vulnerability = get_object_or_404(Vulnerabilities, cve=cve)
+    vulnerability.delete()
+    return redirect('vulnerabilities')
