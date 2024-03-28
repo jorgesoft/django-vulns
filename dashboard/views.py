@@ -45,8 +45,6 @@ def delete_vulnerability(request, cve):
     vulnerability.delete()
     return redirect('vulnerabilities')
 
-from django.shortcuts import get_object_or_404
-
 class VulnerabilityUpdateView(UpdateView):
     model = Vulnerabilities
     form_class = VulnerabilitiesForm
