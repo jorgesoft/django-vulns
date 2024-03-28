@@ -19,5 +19,9 @@ def groups(request):
     return HttpResponse("Groups Page Placeholder")
 
 def vulnerabilities_list(request):
-    vulnerabilities = Vulnerabilities.objects.all()
-    return render(request, 'dashboard/vulnerabilities_list.html', {'vulnerabilities': vulnerabilities})
+    search_query = request.GET.get('cve_search', '')
+    if search_query:
+        vulnerabilities = Vulnerabilities.objects.filter(cve__icontains=search_query)
+    else:
+        vulnerabilities = Vulnerabilities.objects.all()
+    return render(request, 'dashboard/vulnerabilities_list.html', {'vulnerabilities': vulnerabilities, 'search_query': search_query})

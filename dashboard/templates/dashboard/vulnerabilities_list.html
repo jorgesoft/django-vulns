@@ -1,27 +1,54 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Vulnerabilities</h2>
-<table class="table">
-    <thead>
-        <tr>
-            <th>CVE</th>
-            <th>Software</th>
-            <th>Description</th>
-            <th>Severity</th>
-            <th>CWE</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for vulnerability in vulnerabilities %}
-        <tr>
-            <td>{{ vulnerability.cve }}</td>
-            <td>{{ vulnerability.software }}</td>
-            <td>{{ vulnerability.description }}</td>
-            <td>{{ vulnerability.severity }}</td>
-            <td>{{ vulnerability.cwe }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<div class="container mt-3">
+    <h2>Vulnerabilities</h2>
+    <!-- Submenu for vulnerabilities actions -->
+    <div class="mb-3">
+        <a href="#" class="btn btn-success">Create New</a>
+        <!-- The Update and Delete buttons can be part of each vulnerability row or selected via another method -->
+    </div>
+    <div class="search-form mb-3">
+        <form method="get" action="{% url 'vulnerabilities' %}">
+            <div class="input-group">
+                <input type="text" class="form-control" name="cve_search" placeholder="Search by CVE" value="{{ request.GET.cve_search|default:'' }}">
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-info">Find</button>
+                </div>
+            </div>
+        </form>
+    </div>
+     <table class="table">
+        <thead>
+            <tr>
+                <th>CVE</th>
+                <th>Software</th>
+                <th>Description</th>
+                <th>Severity</th>
+                <th>CWE</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for vulnerability in vulnerabilities %}
+            <tr>
+                <td>{{ vulnerability.cve }}</td>
+                <td>{{ vulnerability.software }}</td>
+                <td>{{ vulnerability.description }}</td>
+                <td>{{ vulnerability.severity }}</td>
+                <td>{{ vulnerability.cwe }}</td>
+                <td>
+                    <!-- Example placeholder URLs for update/delete -->
+                    <a href="#" class="btn btn-warning btn-sm">Update</a>
+                    <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6">No results available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}
