@@ -29,7 +29,8 @@ services:
       - "80:80"
     volumes:
       - ./config/nginx:/etc/nginx/conf.d
-      - ./config/nginx/html:/usr/share/nginx/html  # Map the directory containing custom_50x.html
+      - ./config/nginx/.htpasswd:/etc/nginx/.htpasswd
+      - ./config/nginx/html:/usr/share/nginx/html
       - ./static:/static
       - ./media:/media
     depends_on:
