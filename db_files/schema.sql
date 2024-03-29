@@ -74,7 +74,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `mydb`.`vulnerabilities` (
   `cve` VARCHAR(45) NOT NULL,
   `software` VARCHAR(45) NULL,
-  `description` VARCHAR(45) NULL,
+  `description` LONGTEXT NULL,
   `severity` DECIMAL(3,1) NULL,
   `cwe` VARCHAR(45) NULL,
   PRIMARY KEY (`cve`))
@@ -189,8 +189,9 @@ INSERT INTO `groups` (`name`, `type`, `description`) VALUES
 ('linux', 'server', 'Linux Servers');
 
 INSERT INTO vulnerabilities (cve, software, `description`, severity, cwe) VALUES
-('2', 'test', 'test', '10.0', 'test');
-
+('CVE-2021-44228', 'Java', 'An attacker who can control log messages or log message parameters can execute arbitrary code loaded from LDAP servers.', 
+'10.0', 'CWE-917');
+ 
 -- Assuming you have the group IDs and host IDs
 -- For example purposes, let's say windows group ID is 1 and linux group ID is 2
 INSERT INTO assigned_groups (groups_name, hosts_id) VALUES

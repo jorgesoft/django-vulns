@@ -95,7 +95,7 @@ class Users(models.Model):
 class Vulnerabilities(models.Model):
     cve = models.CharField(primary_key=True, max_length=45)
     software = models.CharField(max_length=45, blank=True, null=True)
-    description = models.CharField(max_length=45, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
     severity = models.DecimalField(max_digits=3, decimal_places=1, blank=True, null=True)
     cwe = models.CharField(max_length=45, blank=True, null=True)
 
