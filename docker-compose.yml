@@ -15,13 +15,25 @@ services:
 
   django:
     build: .
-    command: ["./wait-for-it.sh", "db:3306", "-t", "30", "--", "python", "manage.py", "runserver", "0.0.0.0:8000"]
+    command: ["./wait-for-it.sh", "mysql:3306", "-t", "30", "--", "python", "manage.py", "runserver", "0.0.0.0:8000"]
     volumes:
       - .:/app
     ports:
       - "8000:8000"
     depends_on:
       - mysql
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./config/nginx:/etc/nginx/conf.d
+      - ./config/nginx/html:/usr/share/nginx/html  # Map the directory containing custom_50x.html
+      - ./static:/static
+      - ./media:/media
+    depends_on:
+      - django
 
 volumes:
   mysql_data:
