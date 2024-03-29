@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure--($8_0ku7mup%2e3+b2+h3owoz!3+bnbznn^$&d=th@#w3)jf(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [ 'db.nubitlan.com','localhost']
 
 
 # Application definition
