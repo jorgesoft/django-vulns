@@ -29,6 +29,7 @@ services:
       - "80:80"
     volumes:
       - ./config/nginx:/etc/nginx/conf.d
+      - /etc/letsencrypt:/etc/letsencrypt
       - ./config/nginx/.htpasswd:/etc/nginx/.htpasswd
       - ./config/nginx/html:/usr/share/nginx/html
       - ./static:/static
