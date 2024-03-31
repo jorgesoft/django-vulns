@@ -39,8 +39,14 @@
                 <td>{{ vulnerability.severity }}</td>
                 <td>{{ vulnerability.cwe }}</td>
                 <td>
-                    <a href="{% url 'vulnerability-delete' vulnerability.cve %}" onclick="return confirm('Are you sure you want to delete this vulnerability?');" class="btn btn-danger btn-sm">Delete</a>
+                    <!-- Update action remains unchanged -->
                     <a href="{% url 'vulnerability-update' vulnerability.cve %}" class="btn btn-warning btn-sm">Update</a>
+                    
+                    <!-- Delete action updated to use a form -->
+                    <form action="{% url 'vulnerability-delete' vulnerability.cve %}" method="post" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this vulnerability?');">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
                 </td>
             </tr>
             {% empty %}

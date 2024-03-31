@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.views.generic import TemplateView
 from .models import Vulnerabilities
 from .forms import VulnerabilitiesForm
@@ -71,9 +71,27 @@ def create_vulnerability(request):
     return render(request, 'dashboard/vulnerability_create.html', {'form': form})
 
 def delete_vulnerability(request, cve):
-    vulnerability = get_object_or_404(Vulnerabilities, cve=cve)
-    vulnerability.delete()
-    return redirect('vulnerabilities')
+    # Ensure the request is a POST request for safety.
+    if request.method == 'POST':
+        try:
+            with connection.cursor() as cursor:
+                # Delete query using placeholders for safety against SQL injection.
+                sql = "DELETE FROM vulnerabilities WHERE cve = %s"
+                cursor.execute(sql, [cve])
+                # Check if a row was deleted.
+                if cursor.rowcount == 0:
+                    raise Http404("Vulnerability not found.")
+                
+                messages.success(request, 'Vulnerability deleted successfully!')
+        except Exception as e:
+            messages.error(request, 'An error occurred while deleting the vulnerability.')
+            # Optionally log the error or handle it further.
+        
+        return redirect('vulnerabilities')
+    else:
+        # Redirect or show an error if the method is not POST.
+        messages.error(request, 'Invalid request method.')
+        return redirect('vulnerabilities')
 
 class VulnerabilityUpdateView(UpdateView):
     model = Vulnerabilities
