@@ -1,11 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.views.generic import TemplateView
 from .models import Vulnerabilities
 from .forms import VulnerabilitiesForm
 from django.urls import reverse_lazy
 from django.views.generic import DeleteView, UpdateView
-from django.shortcuts import get_object_or_404
 from django.db import connection
 from django.contrib import messages
 
@@ -93,12 +92,43 @@ def delete_vulnerability(request, cve):
         messages.error(request, 'Invalid request method.')
         return redirect('vulnerabilities')
 
-class VulnerabilityUpdateView(UpdateView):
-    model = Vulnerabilities
-    form_class = VulnerabilitiesForm
-    template_name = 'dashboard/vulnerability_update.html'
-    success_url = reverse_lazy('vulnerabilities')
+def update_vulnerability(request, cve):
+    # Fetch the existing vulnerability details for initial form data.
+    if request.method == 'GET':
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM vulnerabilities WHERE cve = %s", [cve])
+            vulnerability = cursor.fetchone()
+            if not vulnerability:
+                raise Http404("Vulnerability not found.")
 
-    def get_object(self, queryset=None):
-        cve = self.kwargs.get("cve")
-        return get_object_or_404(Vulnerabilities, cve=cve)
+            form = VulnerabilitiesForm(initial={
+                'cve': vulnerability[0], 'software': vulnerability[1],
+                'description': vulnerability[2], 'severity': vulnerability[3],
+                'cwe': vulnerability[4]
+            })
+            return render(request, 'dashboard/vulnerability_update.html', {'form': form, 'cve': cve})
+
+    # Process form submission and update the vulnerability.
+    elif request.method == 'POST':
+        form = VulnerabilitiesForm(request.POST)
+        if form.is_valid():
+            software = form.cleaned_data['software']
+            description = form.cleaned_data['description']
+            severity = form.cleaned_data['severity']
+            cwe = form.cleaned_data['cwe']
+
+            with connection.cursor() as cursor:
+                sql = """
+                UPDATE vulnerabilities
+                SET software = %s, description = %s, severity = %s, cwe = %s
+                WHERE cve = %s
+                """
+                cursor.execute(sql, [software, description, severity, cwe, cve])
+                messages.success(request, 'Vulnerability updated successfully!')
+                return redirect('vulnerabilities')
+        else:
+            messages.error(request, 'Form is not valid')
+            return render(request, 'dashboard/vulnerability_update.html', {'form': form, 'cve': cve})
+
+    else:
+        return Http404
