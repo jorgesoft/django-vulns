@@ -126,3 +126,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# CSFR settings
+SESSION_COOKIE_SECURE = True
+CSRF_TRUSTED_ORIGINS = ['https://db.nubitlan.com']
