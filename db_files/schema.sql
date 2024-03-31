@@ -172,28 +172,3 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
-
-INSERT INTO os (id, family, `version`, patch) VALUES
-(1, 'windows', '10', '22H2'),
-(2, 'linux', 'ubuntu', '23.10');
-
-INSERT INTO hosts (`name`, ip, os_id) VALUES
-('winserver1', '10.10.10.1', 1),
-('linuxserver1', '10.11.11.1', 2);
-
-INSERT INTO users (`name`, full_name) VALUES
-('jorges', 'Jorge Silva');
-
-INSERT INTO `groups` (`name`, `type`, `description`) VALUES
-('windows', 'server', 'Windows Servers'),
-('linux', 'server', 'Linux Servers');
-
-INSERT INTO vulnerabilities (cve, software, `description`, severity, cwe) VALUES
-('CVE-2021-44228', 'Java', 'An attacker who can control log messages or log message parameters can execute arbitrary code loaded from LDAP servers.', 
-'10.0', 'CWE-917');
- 
--- Assuming you have the group IDs and host IDs
--- For example purposes, let's say windows group ID is 1 and linux group ID is 2
-INSERT INTO assigned_groups (groups_name, hosts_id) VALUES
-('windows', 1),
-('linux', 2);

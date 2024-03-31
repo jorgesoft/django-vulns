@@ -15,7 +15,7 @@ services:
 
   django:
     build: .
-    command: ["./wait-for-it.sh", "mysql:3306", "-t", "30", "--", "python", "manage.py", "runserver", "0.0.0.0:8000"]
+    command: ["./wait-for-it.sh", "mysql:3306", "-t", "45", "--", "python", "manage.py", "runserver", "0.0.0.0:8000"]
     volumes:
       - .:/app
     ports:

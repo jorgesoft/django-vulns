@@ -3,6 +3,7 @@ FROM mysql:8.0
 
 # Add your custom SQL schema file
 ADD schema.sql /docker-entrypoint-initdb.d
+ADD z_default_data.sql /docker-entrypoint-initdb.d
 
 # Optional: Set environment variables
 #ENV MYSQL_DATABASE=mydatabase
