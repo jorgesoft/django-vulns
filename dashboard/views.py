@@ -49,10 +49,25 @@ def create_vulnerability(request):
     if request.method == 'POST':
         form = VulnerabilitiesForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('vulnerabilities')  # Redirect to the vulnerabilities list
+            cve = form.cleaned_data['cve']
+            software = form.cleaned_data['software']
+            description = form.cleaned_data['description']
+            severity = form.cleaned_data['severity']
+            cwe = form.cleaned_data['cwe']
+            
+            # Ensure you are preventing SQL injection by using placeholders
+            with connection.cursor() as cursor:
+                sql = """
+                INSERT INTO vulnerabilities (cve, software, description, severity, cwe)
+                VALUES (%s, %s, %s, %s, %s)
+                """
+                cursor.execute(sql, [cve, software, description, severity, cwe])
+            
+            messages.success(request, 'Vulnerability created successfully!')
+            return redirect('vulnerabilities')
     else:
         form = VulnerabilitiesForm()
+
     return render(request, 'dashboard/vulnerability_create.html', {'form': form})
 
 def delete_vulnerability(request, cve):
