@@ -1,3 +1,5 @@
+# create tls certs for the hosted server
+
 docker run -it --rm \
     -v "/etc/letsencrypt:/etc/letsencrypt" \
     -v "/var/lib/letsencrypt:/var/lib/letsencrypt" \

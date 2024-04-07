@@ -10,9 +10,10 @@ def vulnerabilities_list(request):
 
     with connection.cursor() as cursor:
         if search_query:
-            # Use ILIKE for case-insensitive matching in PostgreSQL; use LIKE for other databases
+            # Getting vulnerabilites from the search bar
             cursor.execute("SELECT * FROM vulnerabilities WHERE cve LIKE %s", ['%' + search_query + '%'])
         else:
+            # Getting all vulnerabilities
             cursor.execute("SELECT * FROM vulnerabilities")
         result = cursor.fetchall()
         
@@ -35,7 +36,7 @@ def create_vulnerability(request):
             severity = form.cleaned_data['severity']
             cwe = form.cleaned_data['cwe']
             
-            # Ensure you are preventing SQL injection by using placeholders
+            # Using placeholders to prevent SQL injection
             with connection.cursor() as cursor:
                 sql = """
                 INSERT INTO vulnerabilities (cve, software, description, severity, cwe)
@@ -51,30 +52,29 @@ def create_vulnerability(request):
     return render(request, 'dashboard/vulnerability_create.html', {'form': form})
 
 def delete_vulnerability(request, cve):
-    # Ensure the request is a POST request for safety.
+    # Ensuring the request is a POST request for safety.
     if request.method == 'POST':
         try:
             with connection.cursor() as cursor:
-                # Delete query using placeholders for safety against SQL injection.
+                # Deleting query using placeholders for safety against SQL injection
                 sql = "DELETE FROM vulnerabilities WHERE cve = %s"
                 cursor.execute(sql, [cve])
-                # Check if a row was deleted.
+                # Check if a row was deleted
                 if cursor.rowcount == 0:
                     raise Http404("Vulnerability not found.")
                 
                 messages.success(request, 'Vulnerability deleted successfully!')
         except Exception as e:
             messages.error(request, 'An error occurred while deleting the vulnerability.')
-            # Optionally log the error or handle it further.
         
         return redirect('vulnerabilities')
     else:
-        # Redirect or show an error if the method is not POST.
+        # Redirecting or showing an error if the method is not POST
         messages.error(request, 'Invalid request method.')
         return redirect('vulnerabilities')
 
 def update_vulnerability(request, cve):
-    # Fetch the existing vulnerability details for initial form data.
+    # Fetch the existing vulnerability details for initial form data
     if request.method == 'GET':
         with connection.cursor() as cursor:
             cursor.execute("SELECT * FROM vulnerabilities WHERE cve = %s", [cve])
@@ -89,7 +89,7 @@ def update_vulnerability(request, cve):
             })
             return render(request, 'dashboard/vulnerability_update.html', {'form': form, 'cve': cve})
 
-    # Process form submission and update the vulnerability.
+    # Process form submission and update the vulnerability
     elif request.method == 'POST':
         form = VulnerabilitiesForm(request.POST)
         if form.is_valid():

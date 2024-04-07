@@ -20,7 +20,7 @@ class AccessRoles(models.Model):
 
 class ActiveUsers(models.Model):
     hosts = models.ForeignKey('Hosts', models.DO_NOTHING)
-    users_name = models.OneToOneField('Users', models.DO_NOTHING, db_column='users_name', primary_key=True)  # The composite primary key (users_name, access_roles_name) found, that is not supported. The first column is selected.
+    users_name = models.OneToOneField('Users', models.DO_NOTHING, db_column='users_name', primary_key=True)
     access_roles_name = models.ForeignKey(AccessRoles, models.DO_NOTHING, db_column='access_roles_name')
 
     class Meta:
@@ -30,7 +30,7 @@ class ActiveUsers(models.Model):
 
 
 class AssignedGroups(models.Model):
-    groups_name = models.OneToOneField('Groups', models.DO_NOTHING, db_column='groups_name', primary_key=True)  # The composite primary key (groups_name, hosts_id) found, that is not supported. The first column is selected.
+    groups_name = models.OneToOneField('Groups', models.DO_NOTHING, db_column='groups_name', primary_key=True)
     hosts = models.ForeignKey('Hosts', models.DO_NOTHING)
 
     class Meta:
@@ -70,7 +70,7 @@ class Os(models.Model):
 
 
 class Results(models.Model):
-    hosts = models.OneToOneField(Hosts, models.DO_NOTHING, primary_key=True)  # The composite primary key (hosts_id, vulnerabilities_cve) found, that is not supported. The first column is selected.
+    hosts = models.OneToOneField(Hosts, models.DO_NOTHING, primary_key=True)
     vulnerabilities_cve = models.ForeignKey('Vulnerabilities', models.DO_NOTHING, db_column='vulnerabilities_cve')
     proof = models.CharField(max_length=45, blank=True, null=True)
     status = models.CharField(max_length=45, blank=True, null=True)

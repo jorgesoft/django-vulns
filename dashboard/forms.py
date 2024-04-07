@@ -2,7 +2,7 @@ from django import forms
 from .models import Vulnerabilities
 
 class VulnerabilitiesForm(forms.Form):
-    # Assuming these are the fields in your Vulnerabilities model
+    # The same fields as the Vulnerabilities table
     cve = forms.CharField(max_length=100)
     software = forms.CharField(max_length=100)
     description = forms.CharField(max_length=255)
