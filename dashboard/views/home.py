@@ -8,11 +8,22 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
-        # Example: Adding a count of vulnerabilities to the context
+        # Adding a count of results to show the counter
         with connection.cursor() as cursor:
-            cursor.execute("SELECT COUNT(*) FROM vulnerabilities")
-            count_vulnerabilities = cursor.fetchone()[0]
-        context['count_vulnerabilities'] = count_vulnerabilities
+            cursor.execute("SELECT COUNT(*) FROM results")
+            count_results = cursor.fetchone()[0]
+        context['count_results'] = count_results
 
-        # Add more context as needed
+        # Query HostVulnerabilitySummary view
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM HostVulnerabilitySummary")
+            host_vulnerability_summary = cursor.fetchall()
+        context['host_vulnerability_summary'] = host_vulnerability_summary
+
+        # Query DetailedVulnerabilityReport view
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM DetailedVulnerabilityReport")
+            detailed_vulnerability_report = cursor.fetchall()
+        context['detailed_vulnerability_report'] = detailed_vulnerability_report
+
         return context
