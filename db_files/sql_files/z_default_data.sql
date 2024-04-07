@@ -56,3 +56,7 @@ INSERT INTO assigned_groups (groups_name, hosts_id) VALUES
 ('mac', 4),
 ('windows_workstations', 5);
 
+INSERT INTO results (hosts_id, vulnerabilities_cve, proof, status, first_found, last_update) VALUES
+(1, 'CVE-2021-44228', 'log4j exploit proof', 'Open', '2021-12-10', '2022-03-01'),
+(2, 'CVE-2021-44228', 'log4j exploit proof', 'Mitigated', '2021-12-15', '2022-03-05'),
+(3, 'CVE-2018-13379', 'fortinet exploit proof', 'Open', '2021-12-20', '2022-03-10');
