@@ -2,6 +2,7 @@
 -- Mon Mar 18 00:43:31 2024
 -- Model: New Model    Version: 1.0
 -- MySQL Workbench Forward Engineering
+-- Named  a_ so it is run at first before every other file
 
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;

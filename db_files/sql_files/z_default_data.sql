@@ -1,3 +1,4 @@
+-- Named z_ so it's run  at the end of all .sql files
 USE `mydb` ;
 
 INSERT INTO os (id, family, `version`, patch) VALUES
