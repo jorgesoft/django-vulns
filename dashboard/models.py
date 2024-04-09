@@ -67,7 +67,8 @@ class Os(models.Model):
     class Meta:
         managed = False
         db_table = 'os'
-
+    def __str__(self):
+        return f"{self.family} {self.version} - {self.patch}"
 
 class Results(models.Model):
     hosts = models.OneToOneField(Hosts, models.DO_NOTHING, primary_key=True)
