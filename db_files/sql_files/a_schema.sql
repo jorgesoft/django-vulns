@@ -89,19 +89,19 @@ CREATE TABLE IF NOT EXISTS `mydb`.`assigned_groups` (
   `groups_name` VARCHAR(45) NOT NULL,
   `hosts_id` INT NOT NULL,
   PRIMARY KEY (`groups_name`, `hosts_id`),
-  INDEX `fk_groups_has_hosts_hosts1_idx` (`hosts_id` ASC) VISIBLE,
-  INDEX `fk_groups_has_hosts_groups1_idx` (`groups_name` ASC) VISIBLE,
+  INDEX `fk_groups_has_hosts_hosts1_idx` (`hosts_id` ASC),
+  INDEX `fk_groups_has_hosts_groups1_idx` (`groups_name` ASC),
   CONSTRAINT `fk_groups_has_hosts_groups1`
     FOREIGN KEY (`groups_name`)
     REFERENCES `mydb`.`groups` (`name`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_groups_has_hosts_hosts1`
     FOREIGN KEY (`hosts_id`)
     REFERENCES `mydb`.`hosts` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+) ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -115,19 +115,20 @@ CREATE TABLE IF NOT EXISTS `mydb`.`results` (
   `first_found` DATE NULL,
   `last_update` DATE NULL,
   PRIMARY KEY (`hosts_id`, `vulnerabilities_cve`),
-  INDEX `fk_hosts_has_vulnerabilities_vulnerabilities1_idx` (`vulnerabilities_cve` ASC) VISIBLE,
-  INDEX `fk_hosts_has_vulnerabilities_hosts1_idx` (`hosts_id` ASC) VISIBLE,
+  INDEX `fk_hosts_has_vulnerabilities_vulnerabilities1_idx` (`vulnerabilities_cve` ASC),
+  INDEX `fk_hosts_has_vulnerabilities_hosts1_idx` (`hosts_id` ASC),
   CONSTRAINT `fk_hosts_has_vulnerabilities_hosts1`
     FOREIGN KEY (`hosts_id`)
     REFERENCES `mydb`.`hosts` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_hosts_has_vulnerabilities_vulnerabilities1`
     FOREIGN KEY (`vulnerabilities_cve`)
     REFERENCES `mydb`.`vulnerabilities` (`cve`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+) ENGINE = InnoDB;
+
 
 
 -- -----------------------------------------------------
@@ -155,18 +156,18 @@ CREATE TABLE IF NOT EXISTS `mydb`.`active_users` (
   CONSTRAINT `fk_hosts_has_users_hosts1`
     FOREIGN KEY (`hosts_id`)
     REFERENCES `mydb`.`hosts` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_hosts_has_users_users1`
     FOREIGN KEY (`users_name`)
     REFERENCES `mydb`.`users` (`name`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_active_users_access_role1`
     FOREIGN KEY (`access_roles_name`)
     REFERENCES `mydb`.`access_roles` (`name`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
