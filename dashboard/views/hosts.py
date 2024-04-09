@@ -56,3 +56,44 @@ def create_host(request):
         form = HostForm()  # Assuming your form for creating hosts is named HostForm
 
     return render(request, 'dashboard/host_create.html', {'form': form})
+
+def update_host(request, host_id):
+    # Fetch the existing host details for initial form data
+    if request.method == 'GET':
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM hosts WHERE id = %s", [host_id])
+            host = cursor.fetchone()
+            if not host:
+                raise Http404("Host not found.")
+            
+            # Assuming the host form includes fields for 'name', 'ip', and a dropdown for 'os_id'
+            form = HostForm(initial={
+                'name': host[1], 'ip': host[2], 'os_id': host[3]
+            })
+            return render(request, 'dashboard/host_update.html', {'form': form, 'host_id': host_id})
+
+    # Process form submission and update the host
+    elif request.method == 'POST':
+        form = HostForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            ip = form.cleaned_data['ip']
+            os_id = form.cleaned_data['os_id'].id  # Assuming 'os_id' is the name of the field in your HostForm
+            
+            with connection.cursor() as cursor:
+                sql = """
+                UPDATE hosts
+                SET name = %s, ip = %s, os_id = %s
+                WHERE id = %s
+                """
+                cursor.execute(sql, [name, ip, os_id, host_id])
+                
+            messages.success(request, 'Host updated successfully!')
+            return redirect('hosts')  # Redirect to your hosts list view
+        else:
+            messages.error(request, 'Form is not valid')
+            return render(request, 'dashboard/host_update.html', {'form': form, 'host_id': host_id})
+
+    else:
+        return Http404
+   

@@ -8,9 +8,9 @@ from .views.vulnerabilities import (
 )
 from .views.hosts import (
     hosts_list,
-    create_host
-    #delete_host,
-    #update_host,
+    create_host,
+    delete_host,
+    update_host,
 )
 
 urlpatterns = [
@@ -23,6 +23,6 @@ urlpatterns = [
     # Host URLs
     path('hosts/', hosts_list, name='hosts'),
     path('hosts/create/', create_host, name='host-create'),
-    #path('hosts/delete/<int:host_id>/', delete_host, name='host-delete'),
-    #path('host/update/<int:host_id>/', update_host, name='host-update'),
+    path('hosts/delete/<int:host_id>/', delete_host, name='host-delete'),
+    path('host/update/<int:host_id>/', update_host, name='host-update'),
 ]

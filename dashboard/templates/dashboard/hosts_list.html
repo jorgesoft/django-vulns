@@ -35,14 +35,14 @@
                 <td>{{ host.ip }}</td>
                 <td>{{ host.os }}</td>
                 
-                {% comment %} <td>
+                <td>
                     <a href="{% url 'host-update' host.id %}" class="btn btn-warning btn-sm btn-fixed-width">Update</a>
                     
                     <form action="{% url 'host-delete' host.id %}" method="post" class="d-inline-block" onsubmit="return confirm('Are you sure you want to delete this host?');">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-danger btn-sm btn-fixed-width">Delete</button>
                     </form>
-                </td>               {% endcomment %}
+                </td>
             </tr>
             {% empty %}
             <tr>
