@@ -33,3 +33,14 @@ JOIN
 JOIN 
   vulnerabilities v ON r.vulnerabilities_cve = v.cve;
 
+-- Host Details view used the Read Hosts with full OS name on /hosts
+CREATE VIEW host_details AS
+SELECT 
+    h.id AS id,
+    h.name AS `name`,
+    h.ip AS ip,
+    CONCAT(o.family, ' ', o.version, ' - ', o.patch) AS os_id
+FROM 
+    hosts h
+JOIN 
+    os o ON h.os_id = o.id;

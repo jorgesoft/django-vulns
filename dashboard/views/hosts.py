@@ -10,9 +10,10 @@ def hosts_list(request):
 
     with connection.cursor() as cursor:
         if search_query:
-            cursor.execute("SELECT * FROM hosts WHERE name LIKE %s", ['%' + search_query + '%'])
+            # Use the created SQL view 'host_details' instead of the 'hosts' table
+            cursor.execute("SELECT * FROM host_details WHERE host_name LIKE %s", ['%' + search_query + '%'])
         else:
-            cursor.execute("SELECT * FROM hosts")
+            cursor.execute("SELECT * FROM host_details")  # Selecting from the SQL view
         result = cursor.fetchall()
         
         if result:
