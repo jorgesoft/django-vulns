@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import Http404 
-from django.db import connection
+from django.db import connection, IntegrityError
 from django.contrib import messages
 from ..forms import HostForm
 
@@ -29,6 +29,8 @@ def delete_host(request, host_id):
                 if cursor.rowcount == 0:
                     raise Http404("Host not found.")
                 messages.success(request, 'Host deleted successfully!')
+        except IntegrityError as e:
+            messages.error(request, "This host cannot be deleted because it is referenced by another record.")
         except Exception as e:
             messages.error(request, 'An error occurred while deleting the host.')
         return redirect('hosts')
