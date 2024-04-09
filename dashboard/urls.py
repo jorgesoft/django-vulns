@@ -11,6 +11,7 @@ from .views.hosts import (
     create_host,
     delete_host,
     update_host,
+    clear_host_results,
 )
 
 urlpatterns = [
@@ -25,4 +26,5 @@ urlpatterns = [
     path('hosts/create/', create_host, name='host-create'),
     path('hosts/delete/<int:host_id>/', delete_host, name='host-delete'),
     path('host/update/<int:host_id>/', update_host, name='host-update'),
+    path('host/clear-results/<int:host_id>/', clear_host_results, name='clear-host-results'),
 ]

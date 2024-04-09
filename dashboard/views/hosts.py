@@ -99,4 +99,14 @@ def update_host(request, host_id):
 
     else:
         return Http404
-   
+
+def clear_host_results(request, host_id):
+    if request.method == 'POST':
+        with connection.cursor() as cursor:
+            cursor.callproc('DeleteHostResults', [host_id])
+            # Assuming your procedure handles everything correctly and you have proper error handling
+            messages.success(request, 'Results for the host have been cleared successfully!')
+        return redirect('hosts')
+    else:
+        messages.error(request, 'Invalid request method.')
+        return redirect('hosts')   
