@@ -27,7 +27,7 @@ class HostForm(forms.ModelForm):
         # Custom label presentation can be handled here if needed
 
 
-class UserForm(forms.ModelForm):
+class UsersForm(forms.ModelForm):
     class Meta:
         model = Users
         fields = ['name', 'full_name']

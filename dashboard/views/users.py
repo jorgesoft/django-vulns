@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.http import Http404 
 from django.db import connection
 from django.contrib import messages
-from ..forms import UserForm
+from ..forms import UsersForm
 
 
 def list_users(request):
@@ -32,7 +32,7 @@ def list_users(request):
 
 def create_user(request):
     if request.method == 'POST':
-        form = UserForm(request.POST)
+        form = UsersForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data['name']
             full_name = form.cleaned_data['full_name']
@@ -48,6 +48,35 @@ def create_user(request):
             messages.success(request, 'User created successfully!')
             return redirect('users')  # Adjust the redirect to your users' listing URL
     else:
-        form = UserForm()  # An empty form for GET request to display the form
+        form = UsersForm()  # An empty form for GET request to display the form
 
     return render(request, 'dashboard/user_create.html', {'form': form})
+
+
+def update_user(request, user_name):
+    if request.method == 'POST':
+        # Assuming `new_full_name` is obtained from the form
+        new_full_name = request.POST.get('full_name')
+        if not new_full_name:
+            messages.error(request, 'Full name is required.')
+            return render(request, 'dashboard/user_update.html')
+
+        with connection.cursor() as cursor:
+            # Update user's full_name without altering the name
+            cursor.execute("UPDATE users SET full_name = %s WHERE name = %s", [new_full_name, user_name])
+            if cursor.rowcount == 0:
+                raise Http404("User not found.")
+            
+            messages.success(request, 'User updated successfully!')
+            return redirect('users')
+    else:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT name, full_name FROM users WHERE name = %s", [user_name])
+            user = cursor.fetchone()
+            if not user:
+                raise Http404("User not found.")
+            
+            # Convert the tuple from fetchone() to a dictionary
+            user_data = {'name': user[0], 'full_name': user[1]}
+            # Pass the user data to the template, potentially as form initial data
+            return render(request, 'dashboard/user_update.html', {'user': user_data, 'user_name': user_name})

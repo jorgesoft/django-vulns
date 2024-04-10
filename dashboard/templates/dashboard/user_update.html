@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-3">
+    <h2>Update User: {{ user_name }}</h2>
+    <h4>The username field cannot be updated.</h4>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="full_name" class="form-label">Full Name</label>
+            <!-- Display the full name for editing -->
+            <input type="text" class="form-control" id="full_name" name="full_name" value="{{ user.full_name }}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+</div>
+{% endblock %}
