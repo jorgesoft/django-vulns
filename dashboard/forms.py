@@ -1,5 +1,5 @@
 from django import forms
-from .models import Vulnerabilities, Hosts, Os
+from .models import Vulnerabilities, Hosts, Os, Users
 
 class VulnerabilitiesForm(forms.Form):
     # The same fields as the Vulnerabilities table
@@ -25,3 +25,9 @@ class HostForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Custom label presentation can be handled here if needed
+
+
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = Users
+        fields = ['name', 'full_name']
