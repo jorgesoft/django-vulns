@@ -13,6 +13,10 @@ from .views.hosts import (
     update_host,
     clear_host_results,
 )
+from .views.users import (
+    list_users,
+    create_user,
+)
 
 urlpatterns = [
     # Vulnerabilities URLs
@@ -27,4 +31,7 @@ urlpatterns = [
     path('hosts/delete/<int:host_id>/', delete_host, name='host-delete'),
     path('host/update/<int:host_id>/', update_host, name='host-update'),
     path('host/clear-results/<int:host_id>/', clear_host_results, name='clear-host-results'),
+    # Users URLs
+    path('users/', list_users, name='users'),
+    path('users/create/', create_user, name='user-create'),
 ]

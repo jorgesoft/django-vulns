@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-3">
+    <h2>Users</h2>
+    <div class="mb-3">
+        <a href="{% url 'user-create' %}" class="btn btn-success">Create New</a>
+    </div>
+    <div class="search-form mb-3">
+        <form method="get" action="{% url 'users' %}">
+            <div class="input-group">
+                <input type="text" class="form-control" name="user_search" placeholder="Search by Username or Full Name" value="{{ request.GET.user_search|default:'' }}">
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-info">Find</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Full Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.full_name }}</td>
+                    <style>
+                        .btn-fixed-width {
+                            width: 80px;
+                        }
+                    </style>
+                    <td>
+{% comment %}                         <a href="{% url 'user-update' user.name %}" class="btn btn-warning btn-sm btn-fixed-width">Update</a>
+                        <form action="{% url 'user-delete' user.name %}" method="post" class="d-inline-block" onsubmit="return confirm('Are you sure you want to delete this user?');">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm btn-fixed-width">Delete</button>
+                        </form> {% endcomment %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3">No users available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
