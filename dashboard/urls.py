@@ -16,6 +16,7 @@ from .views.hosts import (
 from .views.users import (
     list_users,
     create_user,
+    delete_user,
     update_user,
 )
 
@@ -35,5 +36,6 @@ urlpatterns = [
     # Users URLs
     path('users/', list_users, name='users'),
     path('users/create/', create_user, name='user-create'),
+    path('users/delete/<str:user_name>/', delete_user, name='user-delete'),
     path('users/update/<str:user_name>/', update_user, name='user-update'),
 ]

@@ -80,3 +80,25 @@ def update_user(request, user_name):
             user_data = {'name': user[0], 'full_name': user[1]}
             # Pass the user data to the template, potentially as form initial data
             return render(request, 'dashboard/user_update.html', {'user': user_data, 'user_name': user_name})
+
+
+def delete_user(request, user_name):
+    if request.method == 'POST':
+        try:
+            with connection.cursor() as cursor:
+                # Deleting query using placeholders for safety against SQL injection
+                sql = "DELETE FROM users WHERE name = %s"
+                cursor.execute(sql, [user_name])
+                # Check if a row was deleted
+                if cursor.rowcount == 0:
+                    raise Http404("User not found.")
+
+                messages.success(request, 'User deleted successfully!')
+        except Exception as e:
+            messages.error(request, f'An error occurred while deleting the user: {e}')
+
+        return redirect('users')
+    else:
+        # Redirecting or showing an error if the method is not POST
+        messages.error(request, 'Invalid request method.')
+        return redirect('users')
