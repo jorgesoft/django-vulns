@@ -13,19 +13,20 @@ def hosts_list(request):
             # Use the created SQL view 'host_details' instead of the 'hosts' table
             cursor.execute("SELECT * FROM host_details WHERE name LIKE %s", ['%' + search_query + '%'])
         else:
-            cursor.execute("SELECT * FROM host_details")  # Selecting from the SQL view
+            cursor.execute("SELECT * FROM host_details")
         result = cursor.fetchall()
         
         if result:
             columns = [col[0] for col in cursor.description]
             hosts = [dict(zip(columns, row)) for row in result]
 
-    return render(request, 'dashboard/hosts_list.html', {'hosts': hosts, 'search_query': search_query})
+    return render(request, 'dashboard/host/list.html', {'hosts': hosts, 'search_query': search_query})
 
 def delete_host(request, host_id):
     if request.method == 'POST':
         try:
             with connection.cursor() as cursor:
+                # Construct and execute the raw SQL query
                 cursor.execute("DELETE FROM hosts WHERE id = %s", [host_id])
                 if cursor.rowcount == 0:
                     raise Http404("Host not found.")
@@ -46,7 +47,7 @@ def create_host(request):
         if form.is_valid():
             name = form.cleaned_data['name']
             ip = form.cleaned_data['ip']
-            os_id = form.cleaned_data['os_id'].id  # Assuming 'os' is the name of the field in your HostForm
+            os_id = form.cleaned_data['os_id'].id
 
             # Construct and execute the raw SQL query
             with connection.cursor() as cursor:
@@ -54,11 +55,11 @@ def create_host(request):
                 cursor.execute(sql, [name, ip, os_id])
             
             messages.success(request, 'Host created successfully!')
-            return redirect('hosts')  # Replace 'some-view' with the actual view you want to redirect to
+            return redirect('hosts')
     else:
-        form = HostForm()  # Assuming your form for creating hosts is named HostForm
+        form = HostForm()  
 
-    return render(request, 'dashboard/host_create.html', {'form': form})
+    return render(request, 'dashboard/host/create.html', {'form': form})
 
 def update_host(request, host_id):
     # Fetch the existing host details for initial form data
@@ -69,11 +70,10 @@ def update_host(request, host_id):
             if not host:
                 raise Http404("Host not found.")
             
-            # Assuming the host form includes fields for 'name', 'ip', and a dropdown for 'os_id'
             form = HostForm(initial={
                 'name': host[1], 'ip': host[2], 'os_id': host[3]
             })
-            return render(request, 'dashboard/host_update.html', {'form': form, 'host_id': host_id})
+            return render(request, 'dashboard/host/update.html', {'form': form, 'host_id': host_id})
 
     # Process form submission and update the host
     elif request.method == 'POST':
@@ -81,8 +81,9 @@ def update_host(request, host_id):
         if form.is_valid():
             name = form.cleaned_data['name']
             ip = form.cleaned_data['ip']
-            os_id = form.cleaned_data['os_id'].id  # Assuming 'os_id' is the name of the field in your HostForm
+            os_id = form.cleaned_data['os_id'].id
             
+            # Construct and execute the raw SQL query
             with connection.cursor() as cursor:
                 sql = """
                 UPDATE hosts
@@ -92,10 +93,10 @@ def update_host(request, host_id):
                 cursor.execute(sql, [name, ip, os_id, host_id])
                 
             messages.success(request, 'Host updated successfully!')
-            return redirect('hosts')  # Redirect to your hosts list view
+            return redirect('hosts')
         else:
             messages.error(request, 'Form is not valid')
-            return render(request, 'dashboard/host_update.html', {'form': form, 'host_id': host_id})
+            return render(request, 'dashboard/host/update.html', {'form': form, 'host_id': host_id})
 
     else:
         return Http404
@@ -103,8 +104,8 @@ def update_host(request, host_id):
 def clear_host_results(request, host_id):
     if request.method == 'POST':
         with connection.cursor() as cursor:
+            # Use the DeleteHostResults procedure, this cannot be called raw
             cursor.callproc('DeleteHostResults', [host_id])
-            # Assuming your procedure handles everything correctly and you have proper error handling
             messages.success(request, 'Results for the host have been cleared successfully!')
         return redirect('hosts')
     else:

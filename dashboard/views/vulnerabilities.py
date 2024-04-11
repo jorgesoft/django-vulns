@@ -10,21 +10,20 @@ def vulnerabilities_list(request):
 
     with connection.cursor() as cursor:
         if search_query:
-            # Getting vulnerabilites from the search bar
+            # Construct and execute the raw SQL query
             cursor.execute("SELECT * FROM vulnerabilities WHERE cve LIKE %s", ['%' + search_query + '%'])
         else:
-            # Getting all vulnerabilities
             cursor.execute("SELECT * FROM vulnerabilities")
         result = cursor.fetchall()
         
-        if result:  # Ensure result is not None
+        if result:
             columns = [col[0] for col in cursor.description]
             vulnerabilities = [
                 dict(zip(columns, row))
                 for row in result
             ]
 
-    return render(request, 'dashboard/vulnerabilities_list.html', {'vulnerabilities': vulnerabilities, 'search_query': search_query})
+    return render(request, 'dashboard/vulnerability/list.html', {'vulnerabilities': vulnerabilities, 'search_query': search_query})
 
 def create_vulnerability(request):
     if request.method == 'POST':
@@ -36,7 +35,7 @@ def create_vulnerability(request):
             severity = form.cleaned_data['severity']
             cwe = form.cleaned_data['cwe']
             
-            # Using placeholders to prevent SQL injection
+            # Construct and execute the raw SQL query
             with connection.cursor() as cursor:
                 sql = """
                 INSERT INTO vulnerabilities (cve, software, description, severity, cwe)
@@ -49,17 +48,15 @@ def create_vulnerability(request):
     else:
         form = VulnerabilitiesForm()
 
-    return render(request, 'dashboard/vulnerability_create.html', {'form': form})
+    return render(request, 'dashboard/vulnerability/create.html', {'form': form})
 
 def delete_vulnerability(request, cve):
-    # Ensuring the request is a POST request for safety.
     if request.method == 'POST':
         try:
             with connection.cursor() as cursor:
-                # Deleting query using placeholders for safety against SQL injection
+                # Construct and execute the raw SQL query
                 sql = "DELETE FROM vulnerabilities WHERE cve = %s"
                 cursor.execute(sql, [cve])
-                # Check if a row was deleted
                 if cursor.rowcount == 0:
                     raise Http404("Vulnerability not found.")
                 
@@ -69,7 +66,6 @@ def delete_vulnerability(request, cve):
         
         return redirect('vulnerabilities')
     else:
-        # Redirecting or showing an error if the method is not POST
         messages.error(request, 'Invalid request method.')
         return redirect('vulnerabilities')
 
@@ -77,6 +73,7 @@ def update_vulnerability(request, cve):
     # Fetch the existing vulnerability details for initial form data
     if request.method == 'GET':
         with connection.cursor() as cursor:
+            # Construct and execute the raw SQL query
             cursor.execute("SELECT * FROM vulnerabilities WHERE cve = %s", [cve])
             vulnerability = cursor.fetchone()
             if not vulnerability:
@@ -87,9 +84,8 @@ def update_vulnerability(request, cve):
                 'description': vulnerability[2], 'severity': vulnerability[3],
                 'cwe': vulnerability[4]
             })
-            return render(request, 'dashboard/vulnerability_update.html', {'form': form, 'cve': cve})
+            return render(request, 'dashboard/vulnerability/update.html', {'form': form, 'cve': cve})
 
-    # Process form submission and update the vulnerability
     elif request.method == 'POST':
         form = VulnerabilitiesForm(request.POST)
         if form.is_valid():
@@ -98,6 +94,7 @@ def update_vulnerability(request, cve):
             severity = form.cleaned_data['severity']
             cwe = form.cleaned_data['cwe']
 
+            # Construct and execute the raw SQL query
             with connection.cursor() as cursor:
                 sql = """
                 UPDATE vulnerabilities
@@ -109,7 +106,7 @@ def update_vulnerability(request, cve):
                 return redirect('vulnerabilities')
         else:
             messages.error(request, 'Form is not valid')
-            return render(request, 'dashboard/vulnerability_update.html', {'form': form, 'cve': cve})
+            return render(request, 'dashboard/vulnerability/update.html', {'form': form, 'cve': cve})
 
     else:
         return Http404

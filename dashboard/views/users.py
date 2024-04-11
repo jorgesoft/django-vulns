@@ -13,21 +13,21 @@ def list_users(request):
 
     with connection.cursor() as cursor:
         if search_query:
-            # Getting users from the search bar
+            # Construct and execute the raw SQL query
             cursor.execute("SELECT * FROM users WHERE name LIKE %s OR full_name LIKE %s", ['%' + search_query + '%', '%' + search_query + '%'])
         else:
             # Getting all users
             cursor.execute("SELECT * FROM users")
         result = cursor.fetchall()
         
-        if result:  # Ensure result is not None
+        if result:
             columns = [col[0] for col in cursor.description]
             users = [
                 dict(zip(columns, row))
                 for row in result
             ]
 
-    return render(request, 'dashboard/users_list.html', {'users': users, 'search_query': search_query})
+    return render(request, 'dashboard/user/list.html', {'users': users, 'search_query': search_query})
 
 
 def create_user(request):
@@ -37,7 +37,7 @@ def create_user(request):
             username = form.cleaned_data['name']
             full_name = form.cleaned_data['full_name']
             
-            # Using placeholders to prevent SQL injection
+            # Construct and execute the raw SQL query
             with connection.cursor() as cursor:
                 sql = """
                 INSERT INTO users (name, full_name)
@@ -46,23 +46,22 @@ def create_user(request):
                 cursor.execute(sql, [username, full_name])
             
             messages.success(request, 'User created successfully!')
-            return redirect('users')  # Adjust the redirect to your users' listing URL
+            return redirect('users')
     else:
-        form = UsersForm()  # An empty form for GET request to display the form
+        form = UsersForm()
 
-    return render(request, 'dashboard/user_create.html', {'form': form})
+    return render(request, 'dashboard/user/create.html', {'form': form})
 
 
 def update_user(request, user_name):
     if request.method == 'POST':
-        # Assuming `new_full_name` is obtained from the form
         new_full_name = request.POST.get('full_name')
         if not new_full_name:
             messages.error(request, 'Full name is required.')
-            return render(request, 'dashboard/user_update.html')
+            return render(request, 'dashboard/user/update.html')
 
         with connection.cursor() as cursor:
-            # Update user's full_name without altering the name
+            # Construct and execute the raw SQL query
             cursor.execute("UPDATE users SET full_name = %s WHERE name = %s", [new_full_name, user_name])
             if cursor.rowcount == 0:
                 raise Http404("User not found.")
@@ -76,20 +75,17 @@ def update_user(request, user_name):
             if not user:
                 raise Http404("User not found.")
             
-            # Convert the tuple from fetchone() to a dictionary
             user_data = {'name': user[0], 'full_name': user[1]}
-            # Pass the user data to the template, potentially as form initial data
-            return render(request, 'dashboard/user_update.html', {'user': user_data, 'user_name': user_name})
+            return render(request, 'dashboard/user/update.html', {'user': user_data, 'user_name': user_name})
 
 
 def delete_user(request, user_name):
     if request.method == 'POST':
         try:
             with connection.cursor() as cursor:
-                # Deleting query using placeholders for safety against SQL injection
+                # Construct and execute the raw SQL query
                 sql = "DELETE FROM users WHERE name = %s"
                 cursor.execute(sql, [user_name])
-                # Check if a row was deleted
                 if cursor.rowcount == 0:
                     raise Http404("User not found.")
 
@@ -99,6 +95,5 @@ def delete_user(request, user_name):
 
         return redirect('users')
     else:
-        # Redirecting or showing an error if the method is not POST
         messages.error(request, 'Invalid request method.')
         return redirect('users')
