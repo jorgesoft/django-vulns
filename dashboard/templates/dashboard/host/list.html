@@ -39,7 +39,7 @@
                 </style>
   
                 <td>
-                    <a href="{% url 'host-update' host.id %}" class="btn btn-outline-primary btn-sm btn-action">Update</a>              
+                    <a href="{% url 'host-update' host.id %}" class="btn btn-outline-primary btn-sm btn-action my-1">Update</a>              
                     <form action="{% url 'host-delete' host.id %}" method="post" class="d-inline-block" onsubmit="return confirm('Are you sure you want to delete this host?');">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-outline-danger btn-sm btn-action">Delete</button>
@@ -47,7 +47,7 @@
                 
                     <form action="{% url 'clear-host-results' host.id %}" method="post" class="d-inline-block" onsubmit="return confirm('Are you sure you want to clear all results for this host?');">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-outline-danger btn-sm btn-action">Clear Results</button>
+                        <button type="submit" class="btn btn-outline-danger btn-sm btn-action my-1">Clear Results</button>
                     </form>
                 </td>                            
             {% empty %}
