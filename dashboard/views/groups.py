@@ -26,3 +26,27 @@ def groups_list(request):
             ]
 
     return render(request, 'dashboard/group/list.html', {'groups': groups, 'search_query': search_query})
+
+
+def create_group(request):
+    if request.method == 'POST':
+        form = GroupsForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            group_type = form.cleaned_data['type']
+            description = form.cleaned_data['description']
+            
+            # Construct and execute the raw SQL query
+            with connection.cursor() as cursor:
+                sql = """
+                INSERT INTO `groups` (name, type, description)
+                VALUES (%s, %s, %s)
+                """
+                cursor.execute(sql, [name, group_type, description])
+            
+            messages.success(request, 'Group created successfully!')
+            return redirect('groups')  
+    else:
+        form = GroupsForm()
+
+    return render(request, 'dashboard/group/create.html', {'form': form})
