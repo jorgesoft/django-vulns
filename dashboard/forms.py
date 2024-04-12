@@ -31,3 +31,10 @@ class UsersForm(forms.ModelForm):
     class Meta:
         model = Users
         fields = ['name', 'full_name']
+
+
+class GroupsForm(forms.Form):
+    name = forms.CharField(label='Group Name', max_length=45, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    type = forms.CharField(label='Group Type', max_length=45, required=False, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    description = forms.CharField(label='Description', required=False, widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}))
+    
