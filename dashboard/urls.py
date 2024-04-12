@@ -22,7 +22,7 @@ from .views.users import (
 from .views.groups import (
     groups_list,
     create_group,
-    #delete_group,
+    delete_group,
     #update_group,
 )
 
@@ -48,6 +48,6 @@ urlpatterns = [
     # Group URLs
     path('groups/', groups_list, name='groups'),
     path('groups/create/', create_group, name='group-create'),
-    #path('groups/delete/<str:group_name>/', delete_group, name='group-delete'),
+    path('groups/delete/<str:group_name>/', delete_group, name='group-delete'),
     #path('group/update/<str:group_name>/', update_group, name='group-update'),
 ]

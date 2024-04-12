@@ -50,3 +50,23 @@ def create_group(request):
         form = GroupsForm()
 
     return render(request, 'dashboard/group/create.html', {'form': form})
+
+
+def delete_group(request, group_name):
+    if request.method == 'POST':
+        try:
+            with connection.cursor() as cursor:
+                # Construct and execute the raw SQL query
+                sql = "DELETE FROM `groups` WHERE name = %s"
+                cursor.execute(sql, [group_name])
+                if cursor.rowcount == 0:
+                    raise Http404("Group not found.")
+
+                messages.success(request, 'Group deleted successfully!')
+        except Exception as e:
+            messages.error(request, f'An error occurred while deleting the group: {e}')
+
+        return redirect('groups')
+    else:
+        messages.error(request, 'Invalid request method.')
+        return redirect('groups')
