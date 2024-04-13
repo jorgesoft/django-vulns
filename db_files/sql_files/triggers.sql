@@ -32,3 +32,18 @@ BEGIN
     END IF;
 END //
 DELIMITER ;
+
+
+-- Trigger to capitalize the first character of the `version` field before a new record is inserted
+-- into the `os` table:
+DELIMITER //
+
+CREATE TRIGGER capitalize_version_before_insert
+BEFORE INSERT ON os
+FOR EACH ROW
+BEGIN
+    SET NEW.version = CONCAT(UPPER(SUBSTRING(NEW.version FROM 1 FOR 1)), SUBSTRING(NEW.version FROM 2));
+END;
+
+//
+DELIMITER ;

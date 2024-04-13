@@ -44,3 +44,12 @@ FROM
     hosts h
 JOIN 
     os o ON h.os_id = o.id;
+
+-- View to display id, OS full name and family in the OS list view
+CREATE VIEW os_summary AS
+SELECT 
+    id AS os_id,
+    CONCAT(family, ' ', version, ' - ', patch) AS full_os_name,
+    family
+FROM 
+    mydb.os;
