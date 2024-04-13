@@ -23,7 +23,7 @@ USE `mydb` ;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`os` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `family` VARCHAR(45) NULL,
+  `family` ENUM('Windows', 'Linux', 'MacOS') NULL,
   `version` VARCHAR(45) NULL,
   `patch` VARCHAR(45) NULL,
   PRIMARY KEY (`id`))

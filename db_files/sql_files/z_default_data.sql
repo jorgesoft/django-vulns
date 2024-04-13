@@ -2,12 +2,12 @@
 USE `mydb` ;
 
 INSERT INTO os (id, family, `version`, patch) VALUES
-(1, 'windows', '10', '22H2'),
-(2, 'linux', 'ubuntu', '23.10'),
-(3, 'windows', '11', '21H2'),
-(4, 'linux', 'debian', '10'),
-(5, 'macos', 'Catalina', '10.15.7'),
-(6, 'linux', 'fedora', '34');
+(1, 'Windows', '10', '22H2'),
+(2, 'Linux', 'ubuntu', '23.10'),
+(3, 'Windows', '11', '21H2'),
+(4, 'Linux', 'debian', '10'),
+(5, 'MacOS', 'Catalina', '10.15.7'),
+(6, 'Linux', 'fedora', '34');
 
 INSERT INTO hosts (`name`, ip, os_id) VALUES
 ('winserver1', '10.10.10.1', 1),
