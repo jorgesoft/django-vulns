@@ -25,7 +25,9 @@ from .views.groups import (
     delete_group,
     update_group,
 )
-
+from .views.os import (
+    os_list
+)
 
 urlpatterns = [
     # Vulnerabilities URLs
@@ -50,4 +52,6 @@ urlpatterns = [
     path('groups/create/', create_group, name='group-create'),
     path('groups/delete/<str:group_name>/', delete_group, name='group-delete'),
     path('group/update/<str:group_name>/', update_group, name='group-update'),
+    # OS URLs
+    path('os/', os_list, name='os'),
 ]

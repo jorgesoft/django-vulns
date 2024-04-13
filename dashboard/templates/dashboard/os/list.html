@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-3">
+    <h2>Operating Systems</h2>
+    <div class="mb-3">
+        {% comment %} <a href="{% url 'os-create' %}" class="btn btn-success">Create New</a> {% endcomment %}
+    </div>
+    <div class="search-form mb-3">
+        <form method="get" action="{% url 'os' %}">
+            <div class="input-group">
+                <input type="text" class="form-control" name="os_search" placeholder="Search by OS Name" value="{{ request.GET.os_search|default:'' }}">
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-info">Find</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="table-responsive">
+     <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>OS Name</th>
+                <th>Family</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for os in operating_systems %}
+            <tr>
+                <td>{{ os.id }}</td>
+                <td>{{ os.os_name }}</td>
+                <td>{{ os.family }}</td>
+                <style>
+                    .btn-fixed-width {
+                        width: 80px;
+                    }
+                </style>
+                
+                <td>
+                    {% comment %} <a href="{% url 'os-update' os.id %}" class="btn btn-outline-dark btn-sm btn-fixed-width my-1">Update</a>
+                    
+                    <form action="{% url 'os-delete' os.id %}" method="post" class="d-inline-block" onsubmit="return confirm('Are you sure you want to delete this OS entry?');">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-danger btn-sm btn-fixed-width my-1">Delete</button>
+                    </form> {% endcomment %}
+                </td>              
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No operating systems available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+     </table>
+    </div>
+</div>
+{% endblock %}

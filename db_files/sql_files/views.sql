@@ -48,8 +48,8 @@ JOIN
 -- View to display id, OS full name and family in the OS list view
 CREATE VIEW os_summary AS
 SELECT 
-    id AS os_id,
-    CONCAT(family, ' ', version, ' - ', patch) AS full_os_name,
+    id AS id,
+    CONCAT(family, ' ', version, ' - ', patch) AS os_name,
     family
 FROM 
     mydb.os;
