@@ -37,4 +37,21 @@ class GroupsForm(forms.Form):
     name = forms.CharField(label='Group Name', max_length=45, widget=forms.TextInput(attrs={'class': 'form-control'}))
     type = forms.CharField(label='Group Type', max_length=45, required=False, widget=forms.TextInput(attrs={'class': 'form-control'}))
     description = forms.CharField(label='Description', required=False, widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}))
-    
+
+
+class OsForm(forms.ModelForm):
+    FAMILY_CHOICES = [
+        ('Windows', 'Windows'),
+        ('Linux', 'Linux'),
+        ('MacOS', 'MacOS'),
+    ]
+
+    family = forms.ChoiceField(choices=FAMILY_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
+
+    class Meta:
+        model = Os
+        fields = ['family', 'version', 'patch']
+        widgets = {
+            'version': forms.TextInput(attrs={'class': 'form-control'}),
+            'patch': forms.TextInput(attrs={'class': 'form-control'}),
+        }

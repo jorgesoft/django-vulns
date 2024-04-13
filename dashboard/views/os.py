@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import Http404 
 from django.db import connection
 from django.contrib import messages
-from ..forms import VulnerabilitiesForm
+from ..forms import OsForm
 
 def os_list(request):
     search_query = request.GET.get('os_search', '') 
@@ -25,3 +25,27 @@ def os_list(request):
             ]
 
     return render(request, 'dashboard/os/list.html', {'operating_systems': operating_systems, 'search_query': search_query})
+
+
+def create_os(request):
+    if request.method == 'POST':
+        form = OsForm(request.POST)
+        if form.is_valid():
+            family = form.cleaned_data['family']
+            version = form.cleaned_data['version']
+            patch = form.cleaned_data['patch']
+            
+            # Construct and execute the raw SQL query
+            with connection.cursor() as cursor:
+                sql = """
+                INSERT INTO os (family, version, patch)
+                VALUES (%s, %s, %s)
+                """
+                cursor.execute(sql, [family, version, patch])
+            
+            messages.success(request, 'Operating System created successfully!')
+            return redirect('os')  # Make sure 'os-list' is the correct URL name for the OS list view
+    else:
+        form = OsForm()  # Assuming OsForm handles fields for 'family', 'version', 'patch'
+
+    return render(request, 'dashboard/os/create.html', {'form': form})

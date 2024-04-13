@@ -26,7 +26,8 @@ from .views.groups import (
     update_group,
 )
 from .views.os import (
-    os_list
+    os_list,
+    create_os,
 )
 
 urlpatterns = [
@@ -54,4 +55,5 @@ urlpatterns = [
     path('group/update/<str:group_name>/', update_group, name='group-update'),
     # OS URLs
     path('os/', os_list, name='os'),
+    path('os/create/', create_os, name='os-create'),
 ]
