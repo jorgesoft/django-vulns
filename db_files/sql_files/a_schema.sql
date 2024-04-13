@@ -37,15 +37,15 @@ CREATE TABLE IF NOT EXISTS `mydb`.`hosts` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   `ip` VARCHAR(45) NULL,
-  `os_id` INT NOT NULL,
+  `os_id` INT,
   PRIMARY KEY (`id`),
   INDEX `fk_hosts_os1_idx` (`os_id` ASC) VISIBLE,
   CONSTRAINT `fk_hosts_os1`
     FOREIGN KEY (`os_id`)
     REFERENCES `mydb`.`os` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+    ON DELETE SET NULL
+    ON UPDATE NO ACTION
+) ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------

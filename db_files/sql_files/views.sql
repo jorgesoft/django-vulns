@@ -39,10 +39,10 @@ SELECT
     h.id AS id,
     h.name AS `name`,
     h.ip AS ip,
-    CONCAT(o.family, ' ', o.version, ' - ', o.patch) AS os_id
+    IFNULL(CONCAT(o.family, ' ', o.version, ' - ', o.patch), 'No OS specified') AS os_id
 FROM 
     hosts h
-JOIN 
+LEFT JOIN 
     os o ON h.os_id = o.id;
 
 -- View to display id, OS full name and family in the OS list view
