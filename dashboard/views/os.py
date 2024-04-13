@@ -44,8 +44,27 @@ def create_os(request):
                 cursor.execute(sql, [family, version, patch])
             
             messages.success(request, 'Operating System created successfully!')
-            return redirect('os')  # Make sure 'os-list' is the correct URL name for the OS list view
+            return redirect('os')
     else:
-        form = OsForm()  # Assuming OsForm handles fields for 'family', 'version', 'patch'
+        form = OsForm()
 
     return render(request, 'dashboard/os/create.html', {'form': form})
+
+def delete_os(request, os_id):
+    if request.method == 'POST':
+        try:
+            with connection.cursor() as cursor:
+                # Construct and execute the raw SQL query
+                sql = "DELETE FROM os WHERE id = %s"
+                cursor.execute(sql, [os_id])
+                if cursor.rowcount == 0:
+                    raise Http404("Operating System not found.")
+                
+                messages.success(request, 'Operating System deleted successfully!')
+        except Exception as e:
+            messages.error(request, 'An error occurred while deleting the Operating System.')
+        
+        return redirect('os')
+    else:
+        messages.error(request, 'Invalid request method.')
+        return redirect('os-list')

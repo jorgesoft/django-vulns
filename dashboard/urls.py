@@ -28,6 +28,7 @@ from .views.groups import (
 from .views.os import (
     os_list,
     create_os,
+    delete_os,
 )
 
 urlpatterns = [
@@ -56,4 +57,5 @@ urlpatterns = [
     # OS URLs
     path('os/', os_list, name='os'),
     path('os/create/', create_os, name='os-create'),
+    path('os/delete/<str:os_id>/', delete_os, name='os-delete'),
 ]
