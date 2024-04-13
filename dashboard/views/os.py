@@ -68,3 +68,45 @@ def delete_os(request, os_id):
     else:
         messages.error(request, 'Invalid request method.')
         return redirect('os-list')
+
+def update_os(request, os_id):
+    # Fetch the existing OS details for initial form data
+    if request.method == 'GET':
+        with connection.cursor() as cursor:
+            # Construct and execute the raw SQL query
+            cursor.execute("SELECT * FROM os WHERE id = %s", [os_id])
+            os = cursor.fetchone()
+            if not os:
+                raise Http404("OS not found.")
+
+            form = OsForm(initial={
+                'family': os[1], 
+                'version': os[2],
+                'patch': os[3]
+            })
+            return render(request, 'dashboard/os/update.html', {'form': form, 'os_id': os_id})
+
+    elif request.method == 'POST':
+        form = OsForm(request.POST)
+        if form.is_valid():
+            family = form.cleaned_data['family']
+            version = form.cleaned_data['version']
+            patch = form.cleaned_data['patch']
+
+            # Construct and execute the raw SQL query
+            with connection.cursor() as cursor:
+                sql = """
+                UPDATE os
+                SET family = %s, version = %s, patch = %s
+                WHERE id = %s
+                """
+                cursor.execute(sql, [family, version, patch, os_id])
+                messages.success(request, 'OS updated successfully!')
+                return redirect('os')
+        else:
+            messages.error(request, 'Form is not valid')
+            return render(request, 'dashboard/os/update.html', {'form': form, 'os_id': os_id})
+
+    else:
+        # If the request method isn't GET or POST, return an error
+        return Http404

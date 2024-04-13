@@ -29,6 +29,7 @@ from .views.os import (
     os_list,
     create_os,
     delete_os,
+    update_os,
 )
 
 urlpatterns = [
@@ -58,4 +59,5 @@ urlpatterns = [
     path('os/', os_list, name='os'),
     path('os/create/', create_os, name='os-create'),
     path('os/delete/<str:os_id>/', delete_os, name='os-delete'),
+    path('os/update/<str:os_id>/', update_os, name='os-update'),
 ]
