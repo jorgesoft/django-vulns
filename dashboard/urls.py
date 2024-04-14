@@ -39,6 +39,7 @@ from .views.assigned_groups import (
 )
 from .views.access_roles import (
     access_roles_list,
+    create_access_role,
 )
 
 urlpatterns = [
@@ -76,4 +77,5 @@ urlpatterns = [
     path('assigned_groups/update/<str:group_name>/<int:host_id>/', update_assigned_group, name='assigned-group-update'),
     # Access_roles URLs
     path('access_roles/', access_roles_list, name='access_roles'),
+    path('access_roles/create/', create_access_role, name='access-role-create'),
 ]

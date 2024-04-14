@@ -1,5 +1,5 @@
 from django import forms
-from .models import Vulnerabilities, Hosts, Os, Users, Groups
+from .models import Vulnerabilities, Hosts, Os, Users, Groups, AccessRoles
 
 class VulnerabilitiesForm(forms.Form):
     # The same fields as the Vulnerabilities table
@@ -71,3 +71,28 @@ class AssignedGroupsForm(forms.Form):
         to_field_name='id',
         required=True
     )
+
+
+class AccessRolesForm(forms.ModelForm):
+    ACCESS_LEVEL_CHOICES = (
+    ('High', 'High'),
+    ('Normal', 'Normal'),
+    ('Low', 'Low'),
+    )
+
+    access_level = forms.ChoiceField(
+        choices=ACCESS_LEVEL_CHOICES,
+        label="Access Level",
+        required=False,  # Set to True if this field should not be nullable
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+    description = forms.CharField(
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+        required=False  # Update based on whether your field is required
+    )
+    class Meta:
+        model = AccessRoles  # Assuming your model is named AccessRole
+        fields = ['name', 'access_level', 'description']
+
+    def __init__(self, *args, **kwargs):
+        super(AccessRolesForm, self).__init__(*args, **kwargs)
