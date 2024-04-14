@@ -61,3 +61,9 @@ INSERT INTO results (hosts_id, vulnerabilities_cve, proof, status, first_found, 
 (1, 'CVE-2021-44228', 'log4j exploit proof', 'Open', '2021-12-10', '2022-03-01'),
 (2, 'CVE-2021-44228', 'log4j exploit proof', 'Mitigated', '2021-12-15', '2022-03-05'),
 (3, 'CVE-2018-13379', 'fortinet exploit proof', 'Open', '2021-12-20', '2022-03-10');
+
+INSERT INTO `mydb`.`access_roles` (`name`, `access_level`, `description`) VALUES 
+('user', 'normal', 'Regular user with standard privileges.'),
+('admin', 'high', 'User with administrative privileges to manage the system.'),
+('read-only', 'low', 'User who can only view data, no changes allowed.'),
+('agent', 'normal', 'Automated agent with specific privileges.');

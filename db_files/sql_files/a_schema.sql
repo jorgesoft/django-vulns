@@ -136,8 +136,8 @@ CREATE TABLE IF NOT EXISTS `mydb`.`results` (
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`access_roles` (
   `name` VARCHAR(45) NOT NULL,
-  `access_level` VARCHAR(45) NULL,
-  `description` VARCHAR(45) NULL,
+  `access_level` ENUM('High', 'Normal', 'Low') NULL,
+  `description` VARCHAR(255) NULL,
   PRIMARY KEY (`name`))
 ENGINE = InnoDB;
 
