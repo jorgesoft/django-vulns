@@ -53,3 +53,17 @@ SELECT
     family
 FROM 
     mydb.os;
+
+-- View to show the assigned groups better in the assigned_view list view
+CREATE VIEW assigned_group_details AS
+SELECT 
+    ag.groups_name,
+    ag.hosts_id,
+    g.description AS group_description,
+    h.name AS host_name
+FROM 
+    assigned_groups ag
+JOIN 
+    `groups` g ON ag.groups_name = g.name
+JOIN 
+    hosts h ON ag.hosts_id = h.id;

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-3">
+    <h2>Assigned Groups</h2>
+    <div class="mb-3">
+        {% comment %} <a href="{% url 'assigned-group-create' %}" class="btn btn-success">Create New</a> {% endcomment %}
+    </div>
+    <div class="search-form mb-3">
+        <form method="get" action="{% url 'assigned_groups' %}">
+            <div class="input-group">
+                <input type="text" class="form-control" name="search_query" placeholder="Search by Group or Host" value="{{ request.GET.search_query|default:'' }}">
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-info">Find</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Group Name</th>
+                    <th>Host Name</th>
+                    <th>Group Description</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for group in assigned_groups %}
+                <tr>
+                    <td>{{ group.groups_name }}</td>
+                    <td>{{ group.host_name }}</td>
+                    <td>{{ group.group_description }}</td>
+                    <td>
+{% comment %}                         <a href="{% url 'assigned-group-update' group.groups_name group.hosts_id %}" class="btn btn-outline-dark btn-sm btn-fixed-width my-1">Update</a>
+                        <form action="{% url 'assigned-group-delete' group.groups_name group.hosts_id %}" method="post" class="d-inline-block" onsubmit="return confirm('Are you sure you want to delete this assigned group?');">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-danger btn-sm btn-fixed-width my-1">Delete</button>
+                        </form> {% endcomment %}
+                    </td>              
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">No assigned groups available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
