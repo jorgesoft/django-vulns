@@ -37,6 +37,9 @@ from .views.assigned_groups import (
     delete_assigned_group,
     update_assigned_group,
 )
+from .views.access_roles import (
+    access_roles_list,
+)
 
 urlpatterns = [
     # Vulnerabilities URLs
@@ -71,4 +74,6 @@ urlpatterns = [
     path('assigned_groups/create/', create_assigned_group, name='assigned-group-create'),
     path('assigned_groups/delete/<str:group_name>/<int:host_id>/', delete_assigned_group, name='assigned-group-delete'),
     path('assigned_groups/update/<str:group_name>/<int:host_id>/', update_assigned_group, name='assigned-group-update'),
+    # Access_roles URLs
+    path('access_roles/', access_roles_list, name='access_roles'),
 ]
