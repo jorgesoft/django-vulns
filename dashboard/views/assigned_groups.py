@@ -68,3 +68,47 @@ def delete_assigned_group(request, group_name, host_id):
     else:
         messages.error(request, 'Invalid request method.')
         return redirect('assigned_groups_list')  
+    
+
+def update_assigned_group(request, group_name, host_id):
+    # Fetch the existing assigned group details for initial form data
+    if request.method == 'GET':
+        with connection.cursor() as cursor:
+            # Execute the raw SQL query to fetch the assigned group
+            cursor.execute("SELECT * FROM assigned_groups WHERE groups_name = %s AND hosts_id = %s", [group_name, host_id])
+            assigned_group = cursor.fetchone()
+            if not assigned_group:
+                raise Http404("Assigned Group not found.")
+
+            # Initialize the form with the fetched data
+            form = AssignedGroupsForm(initial={
+                'group_name': assigned_group[0],
+                'host_id': assigned_group[1],
+            })
+            return render(request, 'dashboard/assigned_groups/update.html', {'form': form, 'group_name': group_name, 'host_id': host_id})
+
+    # Process the form submission and update the assigned group
+    elif request.method == 'POST':
+        form = AssignedGroupsForm(request.POST)
+        if form.is_valid():
+            # Extract the data for updating
+            groups_name = form.cleaned_data['groups_name']
+            hosts_id = form.cleaned_data['hosts_id']
+
+            with connection.cursor() as cursor:
+                # Construct and execute the raw SQL query
+                sql = """
+                UPDATE assigned_groups
+                SET groups_name = %s, hosts_id = %s
+                WHERE groups_name = %s AND hosts_id = %s
+                """
+                cursor.execute(sql, [groups_name, hosts_id, group_name, host_id])
+                messages.success(request, 'Assigned group updated successfully!')
+                return redirect('assigned_groups')
+        else:
+            messages.error(request, 'Form is not valid')
+            return render(request, 'dashboard/assigned_groups/update.html', {'form': form, 'group_name': group_name, 'host_id': host_id})
+
+    else:
+        # If the request method isn't GET or POST, return an error
+        return Http404

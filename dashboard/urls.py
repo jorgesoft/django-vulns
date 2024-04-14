@@ -35,6 +35,7 @@ from .views.assigned_groups import (
     assigned_groups_list,
     create_assigned_group,
     delete_assigned_group,
+    update_assigned_group,
 )
 
 urlpatterns = [
@@ -69,4 +70,5 @@ urlpatterns = [
     path('assigned_groups/', assigned_groups_list, name='assigned_groups'),
     path('assigned_groups/create/', create_assigned_group, name='assigned-group-create'),
     path('assigned_groups/delete/<str:group_name>/<int:host_id>/', delete_assigned_group, name='assigned-group-delete'),
+    path('assigned_groups/update/<str:group_name>/<int:host_id>/', update_assigned_group, name='assigned-group-update'),
 ]

@@ -33,7 +33,7 @@
                     <td>{{ group.host_name }}</td>
                     <td>{{ group.group_description }}</td>
                     <td>
-                        {% comment %} <a href="{% url 'assigned-group-update' group.groups_name group.hosts_id %}" class="btn btn-outline-dark btn-sm btn-fixed-width my-1">Update</a> {% endcomment %}
+                        <a href="{% url 'assigned-group-update' group.groups_name group.hosts_id %}" class="btn btn-outline-dark btn-sm btn-fixed-width my-1">Update</a>
                         <form action="{% url 'assigned-group-delete' group.groups_name group.hosts_id %}" method="post" class="d-inline-block" onsubmit="return confirm('Are you sure you want to delete this assigned group?');">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-outline-danger btn-sm btn-fixed-width my-1">Delete</button>
