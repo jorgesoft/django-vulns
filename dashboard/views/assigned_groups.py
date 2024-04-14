@@ -49,3 +49,22 @@ def create_assigned_group(request):
 
     return render(request, 'dashboard/assigned_groups/create.html', {'form': form})
 
+
+def delete_assigned_group(request, group_name, host_id):
+    if request.method == 'POST':
+        try:
+            with connection.cursor() as cursor:
+                # Construct and execute the raw SQL query
+                sql = "DELETE FROM assigned_groups WHERE groups_name = %s AND hosts_id = %s"
+                cursor.execute(sql, [group_name, host_id])
+                if cursor.rowcount == 0:
+                    raise Http404("Assigned group not found.")
+
+                messages.success(request, 'Assigned group deleted successfully!')
+        except Exception as e:
+            messages.error(request, 'An error occurred while deleting the assigned group: {}'.format(e))
+
+        return redirect('assigned_groups')
+    else:
+        messages.error(request, 'Invalid request method.')
+        return redirect('assigned_groups_list')  
