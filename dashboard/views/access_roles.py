@@ -70,3 +70,39 @@ def delete_access_role(request, role_name):
     else:
         messages.error(request, 'Invalid request method.')
         return redirect('access_roles')
+
+
+def update_access_role(request, role_name):
+    if request.method == 'GET':
+        with connection.cursor() as cursor:
+            # Construct and execute the raw SQL query to delete an access role
+            cursor.execute("SELECT * FROM access_roles WHERE name = %s", [role_name])
+            access_role = cursor.fetchone()
+            if not access_role:
+                raise Http404("Access role not found.")
+
+            # Initialize the form with fetched data including the name
+            form = AccessRolesForm(initial={
+                'name': role_name,
+                'access_level': access_role[1],
+                'description': access_role[2]
+            }, is_update=True)
+            return render(request, 'dashboard/access_roles/update.html', {'form': form, 'role_name': role_name})
+
+    elif request.method == 'POST':
+        form = AccessRolesForm(request.POST, is_update=True)
+        if form.is_valid():
+            access_level = form.cleaned_data['access_level']
+            description = form.cleaned_data['description']
+
+            with connection.cursor() as cursor:
+                # Construct and execute the raw SQL query to delete an access role
+                sql = "UPDATE access_roles SET access_level = %s, description = %s WHERE name = %s"
+                cursor.execute(sql, [access_level, description, role_name])
+                messages.success(request, 'Access role updated successfully!')
+                return redirect('access_roles')
+        else:
+            messages.error(request, 'Form is not valid')
+            return render(request, 'dashboard/access_roles/update.html', {'form': form, 'role_name': role_name})
+    else:
+        return Http404

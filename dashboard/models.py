@@ -11,7 +11,7 @@ from django.db import models
 class AccessRoles(models.Model):
     name = models.CharField(primary_key=True, max_length=45)
     access_level = models.CharField(max_length=45, blank=True, null=True)
-    description = models.CharField(max_length=45, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
 
     class Meta:
         managed = False

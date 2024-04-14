@@ -41,6 +41,7 @@ from .views.access_roles import (
     access_roles_list,
     create_access_role,
     delete_access_role,
+    update_access_role,
 )
 
 urlpatterns = [
@@ -80,4 +81,5 @@ urlpatterns = [
     path('access_roles/', access_roles_list, name='access_roles'),
     path('access_roles/create/', create_access_role, name='access-role-create'),
     path('access_roles/delete/<str:role_name>/', delete_access_role, name='access-role-delete'),
+    path('access_roles/update/<str:role_name>/', update_access_role, name='access-role-update'),
 ]

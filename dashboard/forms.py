@@ -75,24 +75,29 @@ class AssignedGroupsForm(forms.Form):
 
 class AccessRolesForm(forms.ModelForm):
     ACCESS_LEVEL_CHOICES = (
-    ('High', 'High'),
-    ('Normal', 'Normal'),
-    ('Low', 'Low'),
+        ('High', 'High'),
+        ('Normal', 'Normal'),
+        ('Low', 'Low'),
     )
 
     access_level = forms.ChoiceField(
         choices=ACCESS_LEVEL_CHOICES,
         label="Access Level",
-        required=False,  # Set to True if this field should not be nullable
+        required=False,
         widget=forms.Select(attrs={'class': 'form-control'})
     )
     description = forms.CharField(
         widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
-        required=False  # Update based on whether your field is required
+        required=False
     )
+    
     class Meta:
-        model = AccessRoles  # Assuming your model is named AccessRole
+        model = AccessRoles  # Assuming your model is named AccessRoles
         fields = ['name', 'access_level', 'description']
-
+    
     def __init__(self, *args, **kwargs):
+        self.is_update = kwargs.pop('is_update', False)
         super(AccessRolesForm, self).__init__(*args, **kwargs)
+        if self.is_update:
+            self.fields['name'].disabled = True
+            self.fields['name'].required = False
