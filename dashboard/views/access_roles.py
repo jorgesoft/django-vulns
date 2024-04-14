@@ -50,3 +50,23 @@ def create_access_role(request):
         form = AccessRolesForm()
 
     return render(request, 'dashboard/access_roles/create.html', {'form': form})
+
+
+def delete_access_role(request, role_name):
+    if request.method == 'POST':
+        try:
+            with connection.cursor() as cursor:
+                # Construct and execute the raw SQL query to delete an access role
+                sql = "DELETE FROM access_roles WHERE name = %s"
+                cursor.execute(sql, [role_name])
+                if cursor.rowcount == 0:
+                    raise Http404("Access role not found.")
+
+                messages.success(request, 'Access role deleted successfully!')
+        except Exception as e:
+            messages.error(request, f'An error occurred while deleting the access role: {e}')
+
+        return redirect('access_roles')
+    else:
+        messages.error(request, 'Invalid request method.')
+        return redirect('access_roles')
