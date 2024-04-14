@@ -48,6 +48,9 @@ class Groups(models.Model):
         managed = False
         db_table = 'groups'
 
+    def __str__(self):
+        return self.name
+
 
 class Hosts(models.Model):
     name = models.CharField(max_length=45)
@@ -58,6 +61,9 @@ class Hosts(models.Model):
         managed = False
         db_table = 'hosts'
 
+    def __str__(self):
+        return self.name
+    
 
 class Os(models.Model):
     family = models.CharField(max_length=45, blank=True, null=True)

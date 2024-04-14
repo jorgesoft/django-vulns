@@ -1,5 +1,5 @@
 from django import forms
-from .models import Vulnerabilities, Hosts, Os, Users
+from .models import Vulnerabilities, Hosts, Os, Users, Groups
 
 class VulnerabilitiesForm(forms.Form):
     # The same fields as the Vulnerabilities table
@@ -55,3 +55,19 @@ class OsForm(forms.ModelForm):
             'version': forms.TextInput(attrs={'class': 'form-control'}),
             'patch': forms.TextInput(attrs={'class': 'form-control'}),
         }
+
+class AssignedGroupsForm(forms.Form):
+    group_name = forms.ModelChoiceField(
+        queryset=Groups.objects.all(),
+        label='Group',
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        to_field_name='name',
+        required=True
+    )
+    host_id = forms.ModelChoiceField(
+        queryset=Hosts.objects.all(),
+        label='Host',
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        to_field_name='id',
+        required=True
+    )

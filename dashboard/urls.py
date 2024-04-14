@@ -33,6 +33,7 @@ from .views.os import (
 )
 from .views.assigned_groups import (
     assigned_groups_list,
+    create_assigned_group,
 )
 
 urlpatterns = [
@@ -65,4 +66,5 @@ urlpatterns = [
     path('os/update/<str:os_id>/', update_os, name='os-update'),
     # Assigned_groups URLs
     path('assigned_groups/', assigned_groups_list, name='assigned_groups'),
+    path('assigned_groups/create/', create_assigned_group, name='assigned-group-create'),
 ]
