@@ -152,7 +152,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`active_users` (
   INDEX `fk_hosts_has_users_users1_idx` (`users_name` ASC) INVISIBLE,
   INDEX `fk_hosts_has_users_hosts1_idx` (`hosts_id` ASC) VISIBLE,
   INDEX `fk_active_users_access_role1_idx` (`access_roles_name` ASC) VISIBLE,
-  PRIMARY KEY (`users_name`, `access_roles_name`),
+  PRIMARY KEY (`hosts_id`, `users_name`, `access_roles_name`),  -- Modified to include hosts_id
   CONSTRAINT `fk_hosts_has_users_hosts1`
     FOREIGN KEY (`hosts_id`)
     REFERENCES `mydb`.`hosts` (`id`)

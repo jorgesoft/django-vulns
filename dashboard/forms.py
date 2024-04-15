@@ -1,5 +1,5 @@
 from django import forms
-from .models import Vulnerabilities, Hosts, Os, Users, Groups, AccessRoles
+from .models import Vulnerabilities, Hosts, Os, Users, Groups, AccessRoles, ActiveUsers
 
 class VulnerabilitiesForm(forms.Form):
     # The same fields as the Vulnerabilities table
@@ -101,3 +101,25 @@ class AccessRolesForm(forms.ModelForm):
         if self.is_update:
             self.fields['name'].disabled = True
             self.fields['name'].required = False
+
+class ActiveUsersForm(forms.ModelForm):
+    hosts = forms.ModelChoiceField(
+        queryset=Hosts.objects.all(),
+        label="Hosts",
+        to_field_name='id',  # Ensures the ID is used
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+    class Meta:
+        model = ActiveUsers
+        fields = ['hosts', 'users', 'access_roles']
+        widgets = {
+            'hosts': forms.Select(attrs={'class': 'form-control'}),
+            'users': forms.Select(attrs={'class': 'form-control'}),
+            'access_roles': forms.Select(attrs={'class': 'form-control'})
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(ActiveUsersForm, self).__init__(*args, **kwargs)
+        self.fields['hosts'].queryset = Hosts.objects.all()
+        self.fields['users'].queryset = Users.objects.all()
+        self.fields['access_roles'].queryset = AccessRoles.objects.all()

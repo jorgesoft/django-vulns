@@ -45,6 +45,7 @@ from .views.access_roles import (
 )
 from .views.active_users import (
     active_users_list,
+    create_active_user,
 )
 
 urlpatterns = [
@@ -87,4 +88,5 @@ urlpatterns = [
     path('access_roles/update/<str:role_name>/', update_access_role, name='access-role-update'),
     # Active_users URLs
     path('active_users/', active_users_list, name='active_users'),
+    path('active_users/create/', create_active_user, name='active-user-create'),
 ]

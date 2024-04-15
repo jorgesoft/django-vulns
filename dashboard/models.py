@@ -18,17 +18,6 @@ class AccessRoles(models.Model):
         db_table = 'access_roles'
 
 
-class ActiveUsers(models.Model):
-    hosts = models.ForeignKey('Hosts', models.DO_NOTHING)
-    users_name = models.OneToOneField('Users', models.DO_NOTHING, db_column='users_name', primary_key=True)
-    access_roles_name = models.ForeignKey(AccessRoles, models.DO_NOTHING, db_column='access_roles_name')
-
-    class Meta:
-        managed = False
-        db_table = 'active_users'
-        unique_together = (('users_name', 'access_roles_name'),)
-
-
 class AssignedGroups(models.Model):
     groups_name = models.OneToOneField('Groups', models.DO_NOTHING, db_column='groups_name', primary_key=True)
     hosts = models.ForeignKey('Hosts', models.DO_NOTHING)
@@ -109,3 +98,13 @@ class Vulnerabilities(models.Model):
     class Meta:
         managed = False
         db_table = 'vulnerabilities'
+
+class ActiveUsers(models.Model):
+    hosts = models.ForeignKey('Hosts', models.CASCADE, db_column='hosts_id')
+    users = models.ForeignKey('Users', models.CASCADE, db_column='users_name')
+    access_roles = models.ForeignKey('AccessRoles', models.CASCADE, db_column='access_roles_name')
+
+    class Meta:
+        managed = False  # If you're not letting Django manage the database
+        db_table = 'active_users'
+        unique_together = (('hosts', 'users', 'access_roles'),)  # Updated to include 'hosts'

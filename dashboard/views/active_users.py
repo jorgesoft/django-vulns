@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import Http404 
 from django.db import connection
 from django.contrib import messages
-from ..forms import AccessRolesForm
+from ..forms import ActiveUsersForm
 
 def active_users_list(request):
     search_query = request.GET.get('search', '')
@@ -25,3 +25,30 @@ def active_users_list(request):
             active_users = [dict(zip(columns, row)) for row in result]
 
     return render(request, 'dashboard/active_users/list.html', {'active_users': active_users, 'search_query': search_query})
+
+
+def create_active_user(request):
+    if request.method == 'POST':
+        form = ActiveUsersForm(request.POST)
+        if form.is_valid():
+            # Directly accessing the id attribute of the model instance
+            hosts_id = form.cleaned_data['hosts'].id
+            users_name = form.cleaned_data['users'].name
+            access_roles_name = form.cleaned_data['access_roles'].name
+            
+            # Raw SQL Execution
+            with connection.cursor() as cursor:
+                sql = """
+                INSERT INTO active_users (hosts_id, users_name, access_roles_name)
+                VALUES (%s, %s, %s)
+                """
+                cursor.execute(sql, [hosts_id, users_name, access_roles_name])
+            
+            messages.success(request, 'Active user added successfully!')
+            return redirect('active_users')
+        else:
+            messages.error(request, 'Form is not valid')
+    else:
+        form = ActiveUsersForm()
+
+    return render(request, 'dashboard/active_users/create.html', {'form': form})
