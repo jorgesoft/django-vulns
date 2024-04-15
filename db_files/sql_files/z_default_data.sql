@@ -67,3 +67,9 @@ INSERT INTO `mydb`.`access_roles` (`name`, `access_level`, `description`) VALUES
 ('admin', 'high', 'User with administrative privileges to manage the system.'),
 ('read-only', 'low', 'User who can only view data, no changes allowed.'),
 ('agent', 'normal', 'Automated agent with specific privileges.');
+
+INSERT INTO `mydb`.`active_users` (`hosts_id`, `users_name`, `access_roles_name`) VALUES
+(1, 'jorges', 'admin'),
+(2, 'marias', 'user'),
+(3, 'liangs', 'read-only'),
+(1, 'alexas', 'agent');

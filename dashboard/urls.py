@@ -43,6 +43,9 @@ from .views.access_roles import (
     delete_access_role,
     update_access_role,
 )
+from .views.active_users import (
+    active_users_list,
+)
 
 urlpatterns = [
     # Vulnerabilities URLs
@@ -82,4 +85,6 @@ urlpatterns = [
     path('access_roles/create/', create_access_role, name='access-role-create'),
     path('access_roles/delete/<str:role_name>/', delete_access_role, name='access-role-delete'),
     path('access_roles/update/<str:role_name>/', update_access_role, name='access-role-update'),
+    # Active_users URLs
+    path('active_users/', active_users_list, name='active_users'),
 ]

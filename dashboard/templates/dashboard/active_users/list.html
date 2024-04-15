@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-3">
+    <h2>Active Users</h2>
+    <div class="mb-3">
+        {% comment %} <a href="{% url 'active-user-create' %}" class="btn btn-success">Create New</a> {% endcomment %}
+    </div>
+    <div class="search-form mb-3">
+        <form method="get" action="{% url 'active_users' %}">
+            <div class="input-group">
+                <input type="text" class="form-control" name="search" placeholder="Search by Username, Role, or Host" value="{{ request.GET.search|default:'' }}">
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-info">Find</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Host Name</th>
+                    <th>Role</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in active_users %}
+                <tr>
+                    <td>{{ user.users_name }}</td>
+                    <td>{{ user.host_name }}</td>
+                    <td>{{ user.access_roles_name }}</td>
+                    <style>
+                        .btn-fixed-width {
+                            width: 80px;
+                        }
+                    </style>
+                    <td>
+                        {% comment %} <a href="{% url 'active-user-update' user.users_name user.access_roles_name %}" class="btn btn-outline-dark btn-sm btn-fixed-width my-1">Update</a>
+                        
+                        <form action="{% url 'active-user-delete' user.users_name user.access_roles_name %}" method="post" class="d-inline-block" onsubmit="return confirm('Are you sure you want to remove this user from the role?');">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-danger btn-sm btn-fixed-width my-1">Delete</button>
+                        </form> {% endcomment %}
+                    </td>              
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6">No active users available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

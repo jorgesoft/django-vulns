@@ -67,3 +67,21 @@ JOIN
     `groups` g ON ag.groups_name = g.name
 JOIN 
     hosts h ON ag.hosts_id = h.id;
+
+-- View to show the active users better in the active_users list view
+CREATE VIEW active_users_details AS
+SELECT
+    au.users_name,
+    au.access_roles_name,
+    h.name AS host_name,
+    h.id AS host_id,
+    u.full_name AS user_full_name,
+    ar.description AS role_description
+FROM
+    active_users au
+JOIN
+    hosts h ON au.hosts_id = h.id
+JOIN
+    users u ON au.users_name = u.name
+JOIN
+    access_roles ar ON au.access_roles_name = ar.name;
