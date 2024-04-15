@@ -20,8 +20,8 @@ COPY requirements.txt /app/
 RUN pip install -r requirements.txt
 
 # Copy the wait-for-it.sh script to wait until the db container is ready to start Django server
-COPY wait-for-it.sh /wait-for-it.sh
-RUN chmod +x /wait-for-it.sh
+COPY scripts/wait-for-it.sh scripts/wait-for-it.sh
+RUN chmod +x scripts/wait-for-it.sh
 
 # Copying project
 COPY . /app/
