@@ -46,6 +46,7 @@ from .views.access_roles import (
 from .views.active_users import (
     active_users_list,
     create_active_user,
+    delete_active_user,
 )
 
 urlpatterns = [
@@ -89,4 +90,5 @@ urlpatterns = [
     # Active_users URLs
     path('active_users/', active_users_list, name='active_users'),
     path('active_users/create/', create_active_user, name='active-user-create'),
+    path('active_users/delete/<int:hosts_id>/<str:users_name>/<str:access_roles_name>/', delete_active_user, name='active-user-delete'),
 ]

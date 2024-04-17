@@ -52,3 +52,26 @@ def create_active_user(request):
         form = ActiveUsersForm()
 
     return render(request, 'dashboard/active_users/create.html', {'form': form})
+
+
+def delete_active_user(request, hosts_id, users_name, access_roles_name):
+    if request.method == 'POST':
+        try:
+            with connection.cursor() as cursor:
+                # Construct and execute the raw SQL query
+                sql = """
+                DELETE FROM active_users 
+                WHERE hosts_id = %s AND users_name = %s AND access_roles_name = %s
+                """
+                cursor.execute(sql, [hosts_id, users_name, access_roles_name])
+                if cursor.rowcount == 0:
+                    raise Http404("Active user not found.")
+
+                messages.success(request, 'Active user deleted successfully!')
+        except Exception as e:
+            messages.error(request, 'An error occurred while deleting the active user: {}'.format(e))
+
+        return redirect('active_users')
+    else:
+        messages.error(request, 'Invalid request method.')
+        return redirect('active_users')

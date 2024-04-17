@@ -38,12 +38,12 @@
                         }
                     </style>
                     <td>
-                        {% comment %} <a href="{% url 'active-user-update' user.users_name user.access_roles_name %}" class="btn btn-outline-dark btn-sm btn-fixed-width my-1">Update</a>
+                        {% comment %} <a href="{% url 'active-user-update' user.users_name user.access_roles_name %}" class="btn btn-outline-dark btn-sm btn-fixed-width my-1">Update</a> {% endcomment %}
                         
-                        <form action="{% url 'active-user-delete' user.users_name user.access_roles_name %}" method="post" class="d-inline-block" onsubmit="return confirm('Are you sure you want to remove this user from the role?');">
+                        <form action="{% url 'active-user-delete' user.hosts_id user.users_name user.access_roles_name %}" method="post" class="d-inline-block" onsubmit="return confirm('Are you sure you want to remove this user from the role?');">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-outline-danger btn-sm btn-fixed-width my-1">Delete</button>
-                        </form> {% endcomment %}
+                        </form>
                     </td>              
                 </tr>
                 {% empty %}

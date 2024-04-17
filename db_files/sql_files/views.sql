@@ -74,7 +74,7 @@ SELECT
     au.users_name,
     au.access_roles_name,
     h.name AS host_name,
-    h.id AS host_id,
+    h.id AS hosts_id,
     u.full_name AS user_full_name,
     ar.description AS role_description
 FROM
