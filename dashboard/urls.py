@@ -51,6 +51,7 @@ from .views.active_users import (
 )
 from .views.results import (
     results_list,
+    create_result
 )
 
 urlpatterns = [
@@ -98,4 +99,5 @@ urlpatterns = [
     path('active_users/update/<int:hosts_id>/<str:users_name>/<str:access_roles_name>/', update_active_user, name='active-user-update'),
     # Results URLs
     path('results/', results_list, name='results'),
+    path('results/create/', create_result, name='results-create'),
 ]

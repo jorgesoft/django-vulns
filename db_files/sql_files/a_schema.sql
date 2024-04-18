@@ -108,15 +108,17 @@ CREATE TABLE IF NOT EXISTS `mydb`.`assigned_groups` (
 -- Table `mydb`.`results`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`results` (
+  `id` INT NOT NULL AUTO_INCREMENT,
   `hosts_id` INT NOT NULL,
   `vulnerabilities_cve` VARCHAR(45) NOT NULL,
   `proof` VARCHAR(45) NULL,
   `status` VARCHAR(45) NULL,
   `first_found` DATE NULL,
   `last_update` DATE NULL,
-  PRIMARY KEY (`hosts_id`, `vulnerabilities_cve`),
-  INDEX `fk_hosts_has_vulnerabilities_vulnerabilities1_idx` (`vulnerabilities_cve` ASC),
+  PRIMARY KEY (`id`),
   INDEX `fk_hosts_has_vulnerabilities_hosts1_idx` (`hosts_id` ASC),
+  INDEX `fk_hosts_has_vulnerabilities_vulnerabilities1_idx` (`vulnerabilities_cve` ASC),
+  UNIQUE INDEX `idx_hosts_vulnerabilities` (`hosts_id`, `vulnerabilities_cve`),
   CONSTRAINT `fk_hosts_has_vulnerabilities_hosts1`
     FOREIGN KEY (`hosts_id`)
     REFERENCES `mydb`.`hosts` (`id`)
