@@ -76,3 +76,55 @@ def delete_result(request, result_id):
     else:
         messages.error(request, 'Invalid request method.')
         return redirect('results')
+
+
+def update_result(request, result_id):
+    if request.method == 'GET':
+        # Fetch the existing result details for initial form data
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                SELECT * FROM DetailedVulnerabilityReport WHERE result_id = %s
+            """, [result_id])
+            result = cursor.fetchone()
+            if not result:
+                raise Http404("Result not found.")
+
+            # Pre-fill the form with the fetched data
+            form_data = {
+                'hosts': result[1],
+                'vulnerabilities': result[3],
+                'proof': result[7],
+                'status': result[8],
+                'first_found': result[9],
+                'last_update': result[10]
+            }
+            form = ResultsForm(initial=form_data)
+            return render(request, 'dashboard/results/update.html', {'form': form, 'result_id': result_id})
+
+    elif request.method == 'POST':
+        form = ResultsForm(request.POST)
+        if form.is_valid():
+            # Extract data from form
+            hosts_id = form.cleaned_data['hosts'].id
+            vulnerabilities_cve = form.cleaned_data['vulnerabilities'].cve
+            proof = form.cleaned_data['proof']
+            status = form.cleaned_data['status']
+            first_found = form.cleaned_data['first_found']
+            last_update = form.cleaned_data['last_update']
+
+            # Update the record using raw SQL
+            with connection.cursor() as cursor:
+                sql = """
+                UPDATE results
+                SET hosts_id = %s, vulnerabilities_cve = %s, proof = %s, status = %s, first_found = %s, last_update = %s
+                WHERE id = %s
+                """
+                cursor.execute(sql, [hosts_id, vulnerabilities_cve, proof, status, first_found, last_update, result_id])
+                messages.success(request, 'Result updated successfully!')
+                return redirect('results')
+        else:
+            messages.error(request, 'Form is not valid')
+            return render(request, 'dashboard/results/update.html', {'form': form, 'result_id': result_id})
+
+    else:
+        return Http404("Invalid HTTP method used.")

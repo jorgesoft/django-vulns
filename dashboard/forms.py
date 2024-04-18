@@ -125,6 +125,18 @@ class ActiveUsersForm(forms.ModelForm):
         self.fields['access_roles'].queryset = AccessRoles.objects.all()
 
 class ResultsForm(forms.Form):
+    hosts = forms.ModelChoiceField(queryset=Hosts.objects.all(), label="Host",
+                             widget=forms.Select(attrs={'class': 'form-control'}))
+    vulnerabilities = forms.ModelChoiceField(queryset=Vulnerabilities.objects.all(), label="Vulnerability",
+                                       widget=forms.Select(attrs={'class': 'form-control'}))
+    proof = forms.CharField(max_length=45, required=False,
+                            widget=forms.TextInput(attrs={'class': 'form-control'}))
+    status = forms.CharField(max_length=45, required=False,
+                             widget=forms.TextInput(attrs={'class': 'form-control'}))
+    first_found = forms.DateField(required=False,
+                                  widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
+    last_update = forms.DateField(required=False,
+                                  widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
     hosts = forms.ModelChoiceField(queryset=Hosts.objects.all(), label="Host", to_field_name="id",
                              widget=forms.Select(attrs={'class': 'form-control'}))
     vulnerabilities = forms.ModelChoiceField(queryset=Vulnerabilities.objects.all(), label="Vulnerability", to_field_name="cve",

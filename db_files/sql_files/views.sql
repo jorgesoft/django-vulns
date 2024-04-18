@@ -18,7 +18,8 @@ GROUP BY
 CREATE VIEW DetailedVulnerabilityReport AS
 SELECT 
   h.name AS hosts_name,
-  h.ip AS hosts_id,
+  h.id AS hosts_id,
+  h.ip AS hosts_ip,
   v.cve AS vulnerabilities_cve,
   v.description AS description,
   v.severity AS severity,
