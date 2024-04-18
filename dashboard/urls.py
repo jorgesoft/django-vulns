@@ -51,7 +51,8 @@ from .views.active_users import (
 )
 from .views.results import (
     results_list,
-    create_result
+    create_result,
+    delete_result
 )
 
 urlpatterns = [
@@ -100,4 +101,5 @@ urlpatterns = [
     # Results URLs
     path('results/', results_list, name='results'),
     path('results/create/', create_result, name='results-create'),
+    path('results/delete/<int:result_id>/', delete_result, name='results-delete'),
 ]

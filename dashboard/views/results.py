@@ -56,3 +56,23 @@ def create_result(request):
         form = ResultsForm()
 
     return render(request, 'dashboard/results/create.html', {'form': form})
+
+
+def delete_result(request, result_id):
+    if request.method == 'POST':
+        try:
+            with connection.cursor() as cursor:
+                # Construct and execute the raw SQL query to delete the specific result
+                sql = "DELETE FROM results WHERE id = %s"
+                cursor.execute(sql, [result_id])
+                if cursor.rowcount == 0:
+                    raise Http404("Result not found.")
+                
+                messages.success(request, 'Result deleted successfully!')
+        except Exception as e:
+            messages.error(request, 'An error occurred while deleting the result: {}'.format(e))
+        
+        return redirect('results')
+    else:
+        messages.error(request, 'Invalid request method.')
+        return redirect('results')

@@ -22,6 +22,7 @@ SELECT
   v.cve AS vulnerabilities_cve,
   v.description AS description,
   v.severity AS severity,
+  r.id AS result_id,
   r.proof AS proof,
   r.status AS status,
   r.first_found AS first_found,
