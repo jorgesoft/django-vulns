@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-3">
+    <h2>Results Details</h2>
+    <div class="mb-3">
+        {% comment %} <a href="{% url 'result-create' %}" class="btn btn-success">Add New Result</a> {% endcomment %}
+    </div>
+    <div class="search-form mb-3">
+        <form method="get" action="{% url 'results' %}">
+            <div class="input-group">
+                <input type="text" class="form-control" name="search" placeholder="Search by Host, CVE or Description" value="{{ request.GET.search|default:'' }}">
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-info">Search</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Host Name</th>
+                    <th>Host IP</th>
+                    <th>Vulnerability CVE</th>
+                    <th>Description</th>
+                    <th>Severity</th>
+                    <th>Proof</th>
+                    <th>Status</th>
+                    <th>First Found</th>
+                    <th>Last Updated</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in results %}
+                <tr>
+                    <td>{{ result.hosts_name }}</td>
+                    <td>{{ result.hosts_id }}</td>
+                    <td>{{ result.vulnerabilities_cve }}</td>
+                    <td>{{ result.description }}</td>
+                    <td>{{ result.severity }}</td>
+                    <td>{{ result.proof }}</td>
+                    <td>{{ result.status }}</td>
+                    <td>{{ result.first_found }}</td>
+                    <td>{{ result.last_update }}</td>
+                    <td>
+                        {% comment %} <a href="{% url 'result-update' result.hosts_id result.vulnerabilities_cve %}" class="btn btn-outline-dark btn-sm">Update</a>
+                        <form action="{% url 'result-delete' result.hosts_id result.vulnerabilities_cve %}" method="post" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this result?');">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+                        </form> {% endcomment %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="10">No results found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

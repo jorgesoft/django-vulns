@@ -17,15 +17,15 @@ GROUP BY
 -- View of detailed results, probably will use in the results page
 CREATE VIEW DetailedVulnerabilityReport AS
 SELECT 
-  h.name AS HostName,
-  h.ip AS HostIP,
-  v.cve AS CVE,
-  v.description AS Description,
-  v.severity AS Severity,
-  r.proof AS Proof,
-  r.status AS Status,
-  r.first_found AS FirstFound,
-  r.last_update AS LastUpdated
+  h.name AS hosts_name,
+  h.ip AS hosts_id,
+  v.cve AS vulnerabilities_cve,
+  v.description AS description,
+  v.severity AS severity,
+  r.proof AS proof,
+  r.status AS status,
+  r.first_found AS first_found,
+  r.last_update AS last_update
 FROM 
   results r
 JOIN 

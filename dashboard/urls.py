@@ -49,6 +49,9 @@ from .views.active_users import (
     delete_active_user,
     update_active_user,
 )
+from .views.results import (
+    results_list,
+)
 
 urlpatterns = [
     # Vulnerabilities URLs
@@ -93,4 +96,6 @@ urlpatterns = [
     path('active_users/create/', create_active_user, name='active-user-create'),
     path('active_users/delete/<int:hosts_id>/<str:users_name>/<str:access_roles_name>/', delete_active_user, name='active-user-delete'),
     path('active_users/update/<int:hosts_id>/<str:users_name>/<str:access_roles_name>/', update_active_user, name='active-user-update'),
+    # Results URLs
+    path('results/', results_list, name='results'),
 ]
