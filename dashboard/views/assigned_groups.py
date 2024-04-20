@@ -92,8 +92,8 @@ def update_assigned_group(request, group_name, host_id):
         form = AssignedGroupsForm(request.POST)
         if form.is_valid():
             # Extract the data for updating
-            groups_name = form.cleaned_data['groups_name']
-            hosts_id = form.cleaned_data['hosts_id']
+            groups_name = form.cleaned_data['group_name']
+            hosts_id = form.cleaned_data['host_id'].id
 
             with connection.cursor() as cursor:
                 # Construct and execute the raw SQL query
