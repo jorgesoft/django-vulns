@@ -21,6 +21,28 @@ END //
 DELIMITER ;
 -- CALL DeleteHostResults(1);
 
+-- -----------------------------------------------------
+-- PROCEDURES FOR THE REPORT
+-- -----------------------------------------------------
+
+
+-- Get Average severity and max severity
+DELIMITER //
+
+CREATE PROCEDURE GetAverageAndMaxSeverity()
+BEGIN
+  SELECT 
+    ROUND(AVG(severity), 1) AS average_severity, 
+    MAX(severity) AS max_severity 
+  FROM vulnerabilities;
+END;
+
+//
+
+DELIMITER ;
+-- CALL GetAverageAndMaxSeverity();
+
+
 -- Retuns count of vulnerabilities by severity based on this rating:
 -- 0.0	None
 -- 0.1 – 3.9	Low
@@ -32,18 +54,20 @@ DELIMITER //
 CREATE PROCEDURE GetVulnerabilityCountsByRating()
 BEGIN
   SELECT
-    SUM(CASE WHEN severity = 0.0 THEN 1 ELSE 0 END) AS None,
-    SUM(CASE WHEN severity BETWEEN 0.1 AND 3.9 THEN 1 ELSE 0 END) AS Low,
-    SUM(CASE WHEN severity BETWEEN 4.0 AND 6.9 THEN 1 ELSE 0 END) AS Medium,
-    SUM(CASE WHEN severity BETWEEN 7.0 AND 8.9 THEN 1 ELSE 0 END) AS High,
-    SUM(CASE WHEN severity BETWEEN 9.0 AND 10.0 THEN 1 ELSE 0 END) AS Critical
-  FROM vulnerabilities;
+    SUM(CASE WHEN v.severity = 0.0 THEN 1 ELSE 0 END) AS None,
+    SUM(CASE WHEN v.severity BETWEEN 0.1 AND 3.9 THEN 1 ELSE 0 END) AS Low,
+    SUM(CASE WHEN v.severity BETWEEN 4.0 AND 6.9 THEN 1 ELSE 0 END) AS Medium,
+    SUM(CASE WHEN v.severity BETWEEN 7.0 AND 8.9 THEN 1 ELSE 0 END) AS High,
+    SUM(CASE WHEN v.severity BETWEEN 9.0 AND 10.0 THEN 1 ELSE 0 END) AS Critical
+  FROM results r
+  INNER JOIN vulnerabilities v ON r.vulnerabilities_cve = v.cve;
 END;
 
 //
 
 DELIMITER ;
 -- CALL GetVulnerabilityCountsByRating();
+
 
 -- Count hosts and vulnerabilities by OS
 DELIMITER //
@@ -73,21 +97,6 @@ END;
 DELIMITER ;
 -- CALL GetHostsAndVulnerabilitiesCountByOS();
 
--- Get Average severity and max severity
-DELIMITER //
-
-CREATE PROCEDURE GetAverageAndMaxSeverity()
-BEGIN
-  SELECT 
-    ROUND(AVG(severity), 1) AS average_severity, 
-    MAX(severity) AS max_severity 
-  FROM vulnerabilities;
-END;
-
-//
-
-DELIMITER ;
--- CALL GetAverageAndMaxSeverity();
 
 -- Get count of vulnerability by software type and the average vulnerability score
 DELIMITER //
@@ -95,11 +104,12 @@ DELIMITER //
 CREATE PROCEDURE GetVulnerabilityStatsBySoftware()
 BEGIN
   SELECT 
-    software,
+    v.software,
     COUNT(*) AS vulnerability_count,
-    ROUND(AVG(severity), 1) AS average_severity_score
-  FROM vulnerabilities
-  GROUP BY software;
+    ROUND(AVG(v.severity), 1) AS average_severity_score
+  FROM results r
+  INNER JOIN vulnerabilities v ON r.vulnerabilities_cve = v.cve
+  GROUP BY v.software;
 END;
 
 //
