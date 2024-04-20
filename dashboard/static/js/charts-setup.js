@@ -7,7 +7,7 @@ function setupCharts(vulnerabilityData, hostData, softwareData) {
             labels: ['None', 'Low', 'Medium', 'High', 'Critical'],
             datasets: [{
                 data: vulnerabilityData,
-                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
+                backgroundColor: ['#007bff', '#4bbf73', '#f0ad4e', '#fd7e14', '#d9534f']
             }]
         }
     });
@@ -20,7 +20,7 @@ function setupCharts(vulnerabilityData, hostData, softwareData) {
             labels: hostData.labels,
             datasets: [{
                 data: hostData.data,
-                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
+                backgroundColor: ['#007bff', '#6610f2', '#6f42c1', '#4bbf73', '#20c997']
             }]
         }
     });
@@ -33,7 +33,7 @@ function setupCharts(vulnerabilityData, hostData, softwareData) {
             labels: softwareData.labels,
             datasets: [{
                 data: softwareData.data,
-                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
+                backgroundColor: ['#007bff', '#6610f2', '#6f42c1', '#4bbf73', '#20c997']
             }]
         }
     });
