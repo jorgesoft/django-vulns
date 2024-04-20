@@ -20,14 +20,12 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>Host Name</th>
-                    <th>Host IP</th>
+                    <th>Host Name</th>           
                     <th>Vulnerability CVE</th>
                     <th>Description</th>
                     <th>Severity</th>
                     <th>Proof</th>
                     <th>Status</th>
-                    <th>First Found</th>
                     <th>Last Updated</th>
                     <th>Actions</th>
                 </tr>
@@ -35,14 +33,12 @@
             <tbody>
                 {% for result in results %}
                 <tr>
-                    <td>{{ result.hosts_name }}</td>
-                    <td>{{ result.hosts_id }}</td>
-                    <td>{{ result.vulnerabilities_cve }}</td>
+                    <td><a href="{% url 'hosts' %}?host_search={{ result.hosts_name }}">{{ result.hosts_name }}</a></td>                  
+                    <td><a href="{% url 'vulnerabilities' %}?cve_search={{ result.vulnerabilities_cve }}">{{ result.vulnerabilities_cve }}</a></td> 
                     <td>{{ result.description }}</td>
                     <td>{{ result.severity }}</td>
                     <td>{{ result.proof }}</td>
                     <td>{{ result.status }}</td>
-                    <td>{{ result.first_found }}</td>
                     <td>{{ result.last_update }}</td>
                     <td>
                         <a href="{% url 'results-update' result.result_id %}" class="btn btn-outline-dark btn-sm">Update</a>
