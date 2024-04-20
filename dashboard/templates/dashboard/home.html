@@ -1,69 +1,62 @@
 {% extends 'base.html' %}
+{% load static %} 
 
 {% block content %}
-<div class="container mt-4">
-    <h1 class="mb-4">Welcome to Vulnerability Management</h1>
-    <p>This application allows you to manage vulnerabilities, hosts, users, and groups.</p>
-    <p>Currently, there are {{ count_results }} vulnerabilities recorded.</p>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div class="container">
+    <div class="row">
 
-    <!-- Host Vulnerability Summary -->
-    <h2 class="mt-4 mb-3">Host Vulnerability Summary</h2>
-    <div class="table-responsive">
-        <table class="table table-striped table-hover">
-            <thead class="thead-light">
-                <tr>
-                    <th>HostName</th>
-                    <th>HostIP</th>
-                    <th>Vulnerabilities</th>
-                    <th>MaxSeverity</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for row in host_vulnerability_summary %}
-                <tr>
-                    <td>{{ row.0 }}</td>
-                    <td>{{ row.1 }}</td>
-                    <td>{{ row.2 }}</td>
-                    <td>{{ row.3 }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <!-- Total Vulnerabilities-->
+        <div class="col-lg-6 col-md-12 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Total Found Vulnerabilities</h5>
+                    <h4 class="card-title display-4">{{ count_results }}</h4>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vulnerability Chart -->
+        <div class="col-lg-6 col-md-12 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Vulnerability Severity Distribution</h5>
+                    <canvas id="vulnerabilityChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Host Chart -->
+        <div class="col-lg-6 col-md-12 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Host Count by OS</h5>
+                    <canvas id="hostChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Software Chart -->
+        <div class="col-lg-6 col-md-12 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Vulnerability Stats by Software</h5>
+                    <canvas id="softwareChart"></canvas>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Detailed Vulnerability Report -->
-    <h2 class="mt-4 mb-3">Detailed Vulnerability Report</h2>
-    <div class="table-responsive">
-        <table class="table table-striped table-hover">
-            <thead class="thead-light">
-                <tr>
-                    <th>HostName</th>
-                    <th>HostIP</th>
-                    <th>CVE</th>
-                    <th>Description</th>
-                    <th>Severity</th>
-                    <th>Proof</th>
-                    <th>Status</th>
-                    <th>FirstFound</th>
-                    <th>LastUpdated</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for row in detailed_vulnerability_report %}
-                <tr>
-                    <td>{{ row.0 }}</td>
-                    <td>{{ row.1 }}</td>
-                    <td>{{ row.2 }}</td>
-                    <td>{{ row.3 }}</td>
-                    <td>{{ row.4 }}</td>
-                    <td>{{ row.5 }}</td>
-                    <td>{{ row.6 }}</td>
-                    <td>{{ row.7 }}</td>
-                    <td>{{ row.8 }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+    <script src="{% static 'js/charts-setup.js' %}"></script>
+    <script>
+        console.log({{ vulnerabilities_by_rating|safe }});
+        document.addEventListener('DOMContentLoaded', function() {
+            var vulnerabilityData = JSON.parse('{{ vulnerabilities_by_rating|safe }}');
+            var hostData = JSON.parse('{{ hosts_vulnerabilities_by_os|safe }}');
+            var softwareData = JSON.parse('{{ software_stats|safe }}');
+
+            setupCharts(vulnerabilityData, hostData, softwareData);
+        });
+    </script>
 </div>
 {% endblock %}
