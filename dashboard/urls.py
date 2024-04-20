@@ -1,5 +1,6 @@
 from django.urls import path
 from .views.home import HomeView
+from .views.report import ReportView
 from .views.vulnerabilities import (
     vulnerabilities_list, 
     create_vulnerability, 
@@ -57,8 +58,9 @@ from .views.results import (
 )
 
 urlpatterns = [
-    # Vulnerabilities URLs
     path('', HomeView.as_view(), name='home'),
+    path('report/', ReportView.as_view(), name='report'),
+    # Vulnerabilities URLs
     path('vulnerabilities/', vulnerabilities_list, name='vulnerabilities'),
     path('vulnerabilities/create/', create_vulnerability, name='vulnerability-create'),
     path('vulnerabilities/delete/<str:cve>/', delete_vulnerability, name='vulnerability-delete'),

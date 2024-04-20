@@ -1,4 +1,3 @@
-# myapp/views/home.py
 from django.views.generic import TemplateView
 from django.db import connection
 
