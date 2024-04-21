@@ -1,4 +1,4 @@
-function setupCharts(vulnerabilityData, hostData, softwareData) {
+function setupCharts(vulnerabilityData, hostData, host_vulns_data) {
     // Setup Vulnerability Chart
     var ctxVulnerabilityChart = document.getElementById('vulnerabilityChart').getContext('2d');
     new Chart(ctxVulnerabilityChart, {
@@ -26,13 +26,13 @@ function setupCharts(vulnerabilityData, hostData, softwareData) {
     });
 
     // Setup Software Chart
-    var ctxSoftwareChart = document.getElementById('softwareChart').getContext('2d');
+    var ctxSoftwareChart = document.getElementById('hostVulnsChart').getContext('2d');
     new Chart(ctxSoftwareChart, {
         type: 'pie',
         data: {
-            labels: softwareData.labels,
+            labels: host_vulns_data.labels,
             datasets: [{
-                data: softwareData.data,
+                data: host_vulns_data.data,
                 backgroundColor: ['#007bff', '#6610f2', '#6f42c1', '#4bbf73', '#20c997']
             }]
         }

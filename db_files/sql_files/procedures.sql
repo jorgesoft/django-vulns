@@ -116,3 +116,24 @@ END;
 
 DELIMITER ;
 -- CALL GetVulnerabilityStatsBySoftware();
+
+-- Loop through each host and calculate how many vulnerability entries 
+-- each one has in the results table
+DELIMITER //
+
+CREATE PROCEDURE CountVulnerabilitiesByHost()
+BEGIN
+    SELECT 
+        h.name AS HostName,
+        COUNT(r.id) AS NumberOfVulnerabilities
+    FROM 
+        hosts AS h
+    LEFT JOIN 
+        results AS r ON h.id = r.hosts_id
+    GROUP BY 
+        h.id, h.name;
+END;
+
+//
+DELIMITER ;
+-- CALL CountVulnerabilitiesByHost();

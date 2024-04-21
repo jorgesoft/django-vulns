@@ -40,13 +40,13 @@ class HomeView(TemplateView):
                 'data': [item[1] for item in data]
             }, cls=DjangoJSONEncoder)
 
-            # Vulns by software
+            # Vulns by Host
             cursor.nextset()
-            cursor.callproc('GetVulnerabilityStatsBySoftware')
-            software_data = cursor.fetchall()
-            context['software_stats'] = json.dumps({
-                'labels': [item[0] for item in software_data],
-                'data': [item[1] for item in software_data]
+            cursor.callproc('CountVulnerabilitiesByHost')
+            host_vulns_data = cursor.fetchall()
+            context['host_vulns_data'] = json.dumps({
+                'labels': [item[0] for item in host_vulns_data],
+                'data': [item[1] for item in host_vulns_data]
             }, cls=DjangoJSONEncoder)
 
         return context

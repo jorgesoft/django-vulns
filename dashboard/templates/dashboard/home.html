@@ -33,7 +33,7 @@
         <div class="col-lg-6 col-md-12 mb-4">
             <div class="card">
                 <div class="card-body d-flex flex-column justify-content-center text-center">
-                    <h5 class="card-title">Total Found Vulnerabilities</h5>
+                    <h5 class="card-title">Total Vulnerabilities Found</h5>
                     <h4 class="card-title display-4">{{ count_results }}</h4>
                 </div>
             </div>
@@ -82,8 +82,8 @@
         <div class="col-lg-6 col-md-12 mb-4">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Vulnerability Stats by Software</h5>
-                    <canvas id="softwareChart"></canvas>
+                    <h5 class="card-title">Vulnerabilities by Host</h5>
+                    <canvas id="hostVulnsChart"></canvas>
                 </div>
             </div>
         </div>
@@ -91,13 +91,14 @@
 
     <script src="{% static 'js/charts-setup.js' %}"></script>
     <script>
-        console.log({{ vulnerabilities_by_rating|safe }});
+        console.log({{ host_vulns_data|safe }});
         document.addEventListener('DOMContentLoaded', function() {
             var vulnerabilityData = JSON.parse('{{ vulnerabilities_by_rating|safe }}');
             var hostData = JSON.parse('{{ hosts_vulnerabilities_by_os|safe }}');
-            var softwareData = JSON.parse('{{ software_stats|safe }}');
+            var hostVulnsData = JSON.parse('{{ host_vulns_data|safe }}');
 
-            setupCharts(vulnerabilityData, hostData, softwareData);
+            console.log(vulnerabilityData);
+            setupCharts(vulnerabilityData, hostData, hostVulnsData);
         });
     </script>
 </div>
