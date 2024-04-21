@@ -15,8 +15,18 @@ class HomeView(TemplateView):
             cursor.execute("SELECT COUNT(*) FROM results")
             count_results = cursor.fetchone()[0]
             context['count_results'] = count_results
+
+            # Count of all hosts
+            cursor.execute("SELECT COUNT(*) FROM hosts")
+            count_hosts = cursor.fetchone()[0]
+            context['count_hosts'] = count_hosts
+
+            # Average and Maximum Severity of Vulnerabilities
+            cursor.callproc('GetAverageAndMaxSeverity')
+            context['avg_max_severity'] = cursor.fetchall()
             
             # Vulns by rating graph
+            cursor.nextset()
             cursor.callproc('GetVulnerabilityCountsByRating')
             vulnerabilities_by_rating = cursor.fetchall()[0]
             context['vulnerabilities_by_rating'] = json.dumps(vulnerabilities_by_rating, cls=DjangoJSONEncoder)
