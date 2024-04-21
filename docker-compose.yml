@@ -15,9 +15,10 @@ services:
 
   django:
     build: .
-    command: ["./scripts/wait-for-it.sh", "mysql:3306", "-t", "45", "--", "python", "manage.py", "runserver", "0.0.0.0:8000"]
+    command: bash -c "python manage.py collectstatic --noinput && ./scripts/wait-for-it.sh mysql:3306 -t 45 -- python manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/app
+      - static_volume:/app/static
     ports:
       - "8000:8000"
     depends_on:
@@ -33,10 +34,11 @@ services:
       - /etc/letsencrypt:/etc/letsencrypt
       - ./config/nginx/.htpasswd:/etc/nginx/.htpasswd
       - ./config/nginx/html:/usr/share/nginx/html
-      - ./static:/static
+      - static_volume:/static
       - ./media:/media
     depends_on:
       - django
 
 volumes:
   mysql_data:
+  static_volume:
