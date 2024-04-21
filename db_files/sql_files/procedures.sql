@@ -54,7 +54,7 @@ DELIMITER //
 CREATE PROCEDURE GetVulnerabilityCountsByRating()
 BEGIN
   SELECT
-    SUM(CASE WHEN v.severity = 0.0 THEN 1 ELSE 0 END) AS None,
+    SUM(CASE WHEN v.severity = 0.0 THEN 1 ELSE 0 END) AS `None`,
     SUM(CASE WHEN v.severity BETWEEN 0.1 AND 3.9 THEN 1 ELSE 0 END) AS Low,
     SUM(CASE WHEN v.severity BETWEEN 4.0 AND 6.9 THEN 1 ELSE 0 END) AS Medium,
     SUM(CASE WHEN v.severity BETWEEN 7.0 AND 8.9 THEN 1 ELSE 0 END) AS High,
