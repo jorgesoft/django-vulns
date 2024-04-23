@@ -128,7 +128,7 @@ BEGIN
         COUNT(r.id) AS NumberOfVulnerabilities
     FROM 
         hosts AS h
-    LEFT JOIN 
+    INNER JOIN 
         results AS r ON h.id = r.hosts_id
     GROUP BY 
         h.id, h.name;
