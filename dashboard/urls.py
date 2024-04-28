@@ -13,6 +13,7 @@ from .views.hosts import (
     delete_host,
     update_host,
     clear_host_results,
+    host_detail,
 )
 from .views.users import (
     list_users,
@@ -71,6 +72,7 @@ urlpatterns = [
     path('hosts/delete/<int:host_id>/', delete_host, name='host-delete'),
     path('host/update/<int:host_id>/', update_host, name='host-update'),
     path('host/clear-results/<int:host_id>/', clear_host_results, name='clear-host-results'),
+    path('host/detail/<int:host_id>/', host_detail, name='host-detail'),
     # Users URLs
     path('users/', list_users, name='users'),
     path('users/create/', create_user, name='user-create'),

@@ -29,7 +29,7 @@
         <tbody>
             {% for host in hosts %}
             <tr>
-                <td>{{ host.name }}</td>
+                <td><a href="{% url 'host-detail' host.id %}">{{ host.name }}</a></td>
                 <td>{{ host.ip }}</td>
                 <td>{{ host.os_id }}</td>
                 <style>

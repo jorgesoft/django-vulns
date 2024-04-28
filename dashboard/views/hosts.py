@@ -111,3 +111,35 @@ def clear_host_results(request, host_id):
     else:
         messages.error(request, 'Invalid request method.')
         return redirect('hosts')   
+    
+
+def host_detail(request, host_id):
+    host_data = {}
+    with connection.cursor() as cursor:
+        # Get basic host details
+        cursor.execute("SELECT name, ip, id FROM hosts WHERE id = %s", [host_id])
+        host = cursor.fetchone()
+        if not host:
+            raise Http404("Host not found.")
+        host_data['name'] = host[0]
+        host_data['ip'] = host[1]
+        host_data['id'] = host[2]
+
+        # Get the average severity
+        cursor.execute("SELECT AverageSeverity(%s)", [host_id])
+        host_data['average_severity'] = cursor.fetchone()[0]
+
+        # Get the highest risk
+        cursor.execute("SELECT HighestRiskForHost(%s)", [host_id])
+        host_data['highest_risk'] = cursor.fetchone()[0]
+
+        # Get the last found date
+        cursor.execute("SELECT LastVulnerabilityFoundDate(%s)", [host_id])
+        host_data['last_found_date'] = cursor.fetchone()[0]
+
+        # Check if the host has high vulnerabilities
+        severity_threshold = 7.0  # Define a threshold for high risk
+        cursor.execute("SELECT HasHighRiskVulnerabilities(%s, %s)", [host_id, severity_threshold])
+        host_data['has_high_risk_vulnerabilities'] = cursor.fetchone()[0]
+
+    return render(request, 'dashboard/host/detail.html', {'host': host_data})
