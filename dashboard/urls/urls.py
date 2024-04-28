@@ -1,13 +1,13 @@
 from django.urls import path
-from .views.home import HomeView
-from .views.report import ReportView
-from .views.vulnerabilities import (
+from ..views.home import HomeView
+from ..views.report import ReportView
+from ..views.tables.vulnerabilities import (
     vulnerabilities_list, 
     create_vulnerability, 
     delete_vulnerability, 
     update_vulnerability,
 )
-from .views.hosts import (
+from ..views.tables.hosts import (
     hosts_list,
     create_host,
     delete_host,
@@ -15,43 +15,43 @@ from .views.hosts import (
     clear_host_results,
     host_detail,
 )
-from .views.users import (
+from ..views.tables.users import (
     list_users,
     create_user,
     delete_user,
     update_user,
 )
-from .views.groups import (
+from ..views.tables.groups import (
     groups_list,
     create_group,
     delete_group,
     update_group,
 )
-from .views.os import (
+from ..views.tables.os import (
     os_list,
     create_os,
     delete_os,
     update_os,
 )
-from .views.assigned_groups import (
+from ..views.tables.assigned_groups import (
     assigned_groups_list,
     create_assigned_group,
     delete_assigned_group,
     update_assigned_group,
 )
-from .views.access_roles import (
+from ..views.tables.access_roles import (
     access_roles_list,
     create_access_role,
     delete_access_role,
     update_access_role,
 )
-from .views.active_users import (
+from ..views.tables.active_users import (
     active_users_list,
     create_active_user,
     delete_active_user,
     update_active_user,
 )
-from .views.results import (
+from ..views.tables.results import (
     results_list,
     create_result,
     delete_result,

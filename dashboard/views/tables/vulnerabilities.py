@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import Http404 
 from django.db import connection
 from django.contrib import messages
-from ..forms import VulnerabilitiesForm
+from ...forms import VulnerabilitiesForm
 
 def vulnerabilities_list(request):
     search_query = request.GET.get('cve_search', '')

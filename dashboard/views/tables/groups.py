@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import Http404 
 from django.db import connection
 from django.contrib import messages
-from ..forms import GroupsForm
+from ...forms import GroupsForm
 
 def groups_list(request):
     search_query = request.GET.get('group_search', '')

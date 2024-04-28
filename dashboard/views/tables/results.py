@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import Http404 
 from django.db import connection
 from django.contrib import messages
-from ..forms import ResultsForm
+from ...forms import ResultsForm
 
 def results_list(request):
     search_query = request.GET.get('search', '')

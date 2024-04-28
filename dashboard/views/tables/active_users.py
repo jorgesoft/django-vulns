@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import Http404 
 from django.db import connection
 from django.contrib import messages
-from ..forms import ActiveUsersForm
+from ...forms import ActiveUsersForm
 
 def active_users_list(request):
     search_query = request.GET.get('search', '')

@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import Http404 
 from django.db import connection
 from django.contrib import messages
-from ..forms import OsForm
+from ...forms import OsForm
 
 def os_list(request):
     search_query = request.GET.get('os_search', '') 
