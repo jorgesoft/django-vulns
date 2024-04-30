@@ -14,6 +14,8 @@ function setupCharts(vulnerabilityData, hostData, host_vulns_data) {
             plugins: {
               legend: {
                 position: 'top',
+                onClick: function(e, legendItem) {
+                }
               },
               title: {
                 display: true,
@@ -38,6 +40,8 @@ function setupCharts(vulnerabilityData, hostData, host_vulns_data) {
             plugins: {
               legend: {
                 position: 'right',
+                onClick: function(e, legendItem) {
+              }
               },
               title: {
                 display: true,
@@ -62,6 +66,8 @@ function setupCharts(vulnerabilityData, hostData, host_vulns_data) {
             plugins: {
               legend: {
                 position: 'right',
+                onClick: function(e, legendItem) {
+                }
               },
               title: {
                 display: true,
