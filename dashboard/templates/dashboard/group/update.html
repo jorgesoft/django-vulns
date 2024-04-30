@@ -3,6 +3,7 @@
 {% block content %}
 <div class="container mt-3">
     <h2>Update Group</h2>
+    <h5>The name field cannot be updated</h5>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
